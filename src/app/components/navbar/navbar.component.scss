@@ -1,0 +1,128 @@
+.navbar {
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    164deg,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(255, 2, 2, 1) 39%
+  );
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  box-shadow: 2px 2px 4px #444;
+  text-align: center;
+  z-index: 1000;
+}
+
+.navbar-light .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 0.5)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.imagenNav {
+  width: 50px;
+  height: 50px;
+  margin-right: 2rem;
+  border: 2px dotted #fff;
+  border-radius: 50%;
+  box-shadow: 2px 2px 4px #000;
+}
+
+.userInfo {
+  color: white;
+  font-size: 1rem;
+  padding: 5px;
+  margin-right: 10px;
+  background: rgba(129, 221, 93, 0.623);
+  border-radius: 10px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+// *******************************************************************************
+// *******************************************************************************
+// *******************************************************************************
+// *******************************************************************************
+
+/* From uiverse.io by @joe-watson-sbf */
+.btn-nav {
+  font-size: 17px;
+  background: transparent;
+  border: none;
+  padding: 1em 1.5em;
+  color: #ffedd3;
+  text-transform: uppercase;
+  position: relative;
+  transition: 0.5s ease;
+}
+
+.btn-nav::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0;
+  background-color: #ffffff;
+  transition: 0.5s ease;
+}
+
+.btn-nav:hover {
+  color: #990b01;
+  transition-delay: 0.5s;
+}
+
+.btn-nav:hover::before {
+  width: 100%;
+}
+
+.btn-nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: #f8caca;
+  transition: 0.4s ease;
+  z-index: -1;
+}
+
+.btn-nav:hover::after {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: rgb(0, 0, 0);
+}
+
+.btn-login:hover {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: rgb(1, 77, 11);
+}
+.btn-login::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: #9af097;
+  transition: 0.4s ease;
+  z-index: -1;
+}
+
+.btn-registro:hover {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: rgb(0, 114, 114);
+}
+.btn-registro::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: #a8fcfc;
+  transition: 0.4s ease;
+  z-index: -1;
+}
