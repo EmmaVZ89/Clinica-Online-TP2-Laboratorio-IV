@@ -1,0 +1,22 @@
+<app-navbar></app-navbar>
+<div class="opcion-registros row" *ngIf="!formPaciente && !formEspecialista">
+  <div class="col text-focus-in" (click)="goToFormPaciente()">
+    <div>
+      <h2>Paciente</h2>
+      <img src="../../../assets/paciente.png" alt="imagen paciente" />
+    </div>
+  </div>
+  <div class="col text-focus-in" (click)="goToFormEspecialista()">
+    <div>
+      <h2>Especialista</h2>
+      <img src="../../../assets/especialista.png" alt="imagen especialista" />
+    </div>
+  </div>
+</div>
+<div class="registro-paciente" *ngIf="formPaciente">
+  <app-form-alta-paciente></app-form-alta-paciente>
+</div>
+<div class="registro-especialista" *ngIf="formEspecialista">
+  <app-form-alta-especialista></app-form-alta-especialista>
+</div>
+<div class="registro-container"></div>

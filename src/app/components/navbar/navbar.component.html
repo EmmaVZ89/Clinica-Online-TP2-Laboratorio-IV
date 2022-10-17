@@ -1,11 +1,7 @@
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" routerLink="">
-      <img
-        src="../../../favicon.ico"
-        class="imagenNav"
-        alt="icono principal"
-      />
+      <img src="../../../favicon.ico" class="imagenNav" alt="icono principal" />
     </a>
     <button
       class="navbar-toggler navbar-light"
@@ -28,9 +24,7 @@
                 >&nbsp;Home&nbsp;</span
               >
             </button> -->
-            <button class="btn-nav">
-                Home
-            </button>
+            <button class="btn-nav">Home</button>
           </a>
         </li>
         <!-- <li class="nav-item">
@@ -105,11 +99,11 @@
         </span>
       </span> -->
 
-      <button class="btn-nav btn-registro">
+      <button class="btn-nav btn-registro" (click)="goToRegister()">
         <span>Registro</span>
       </button>
 
-      <button class="btn-nav btn-login">
+      <button class="btn-nav btn-login" (click)="goToLogin()">
         <span>Login</span>
       </button>
 

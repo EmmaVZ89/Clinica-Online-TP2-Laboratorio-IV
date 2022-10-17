@@ -10,8 +10,10 @@
       Bienvenido, por favor inicia sesión para continuar.
     </p>
     <div>
-      <button class="custom-btn btn-ingresar"><span>Ingresar</span></button>
-      <button class="custom-btn btn-registrarse">
+      <button class="custom-btn btn-ingresar" (click)="goToLogin()">
+        <span>Ingresar</span>
+      </button>
+      <button class="custom-btn btn-registrarse" (click)="goToRegister()">
         <span>Registrarse</span>
       </button>
     </div>

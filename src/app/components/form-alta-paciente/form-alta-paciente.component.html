@@ -1,0 +1,183 @@
+<form
+  [formGroup]="formPaciente"
+  class="contenedor-form text-focus-in"
+  (ngSubmit)="createPaciente()"
+>
+  <h2>REGISTRO DE PACIENTE</h2>
+  <div class="row">
+    <!-- INPUT NOMBRE -->
+    <div class="col-sm mb-3">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input
+        formControlName="nombre"
+        type="text"
+        class="form-control"
+        id="nombre"
+        placeholder="Nombre"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+                formPaciente.controls['nombre'].errors?.['required'] &&
+                formPaciente.controls['nombre'].touched
+                            "
+      >
+        El Nombre es requerido
+      </small>
+    </div>
+    <!-- INPUT APELLIDO -->
+    <div class="col-sm mb-3">
+      <label for="apellido" class="form-label">Apellido</label>
+      <input
+        formControlName="apellido"
+        type="text"
+        class="form-control"
+        id="apellido"
+        placeholder="Apellido"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+                formPaciente.controls['apellido'].errors?.['required'] &&
+                formPaciente.controls['apellido'].touched
+                            "
+      >
+        El Apellido es requerido
+      </small>
+    </div>
+    <!-- INPUT EDAD -->
+    <div class="col-sm mb-3">
+      <label for="edad" class="form-label">Edad</label>
+      <input
+        formControlName="edad"
+        type="number"
+        class="form-control"
+        id="edad"
+        placeholder="Edad"
+        min="18"
+        max="99"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+          formPaciente.controls['edad'].errors?.['required'] &&
+          formPaciente.controls['edad'].touched
+                  "
+      >
+        La Edad es requerida
+      </small>
+      <small
+        style="color: red"
+        *ngIf="
+          formPaciente.controls['edad'].errors?.['min'] ||
+                    (formPaciente.controls['edad'].errors?.['max'] &&
+                    formPaciente.controls['edad'].touched)
+                  "
+      >
+        La Edad debe ser de 18 a 99 años
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <!-- INPUT TELÉFONO -->
+    <div class="col-sm mb-3">
+      <label for="obraSocial" class="form-label">Obra Social</label>
+      <input
+        formControlName="obraSocial"
+        type="text"
+        class="form-control"
+        placeholder="Obra Social"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formPaciente.controls['obraSocial'].errors?.['required'] &&
+        formPaciente.controls['obraSocial'].touched
+                "
+      >
+        La Obra Social es requerida
+      </small>
+    </div>
+    <!-- INPUT MAIL -->
+    <div class="col-sm mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        formControlName="email"
+        type="email"
+        class="form-control"
+        placeholder="Email"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formPaciente.controls['email'].errors?.['required'] &&
+        formPaciente.controls['email'].touched
+                "
+      >
+        El Email es requerido
+      </small>
+    </div>
+    <!-- INPUT PASSWORD -->
+    <div class="col-sm mb-3">
+      <label for="password" class="form-label">Contraseña</label>
+      <input
+        formControlName="password"
+        type="password"
+        class="form-control"
+        placeholder="Contraseña"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formPaciente.controls['password'].errors?.['required'] &&
+        formPaciente.controls['password'].touched
+                "
+      >
+        La contraseña es requerida
+      </small>
+    </div>
+  </div>
+  <div class="row">
+    <!-- INPUT IMAGEN 1 -->
+    <div class="col-sm mb-3">
+      <label for="imagen1" class="form-label">Imagen Perfil 1</label>
+      <input
+        formControlName="imagen1"
+        type="file"
+        class="form-control"
+        placeholder="Imagen Perfil"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formPaciente.controls['imagen1'].errors?.['required'] &&
+        formPaciente.controls['imagen1'].touched
+                "
+      >
+        La imagen de perfil 1 es requerida
+      </small>
+    </div>
+    <!-- INPUT IMAGEN 2 -->
+    <div class="col-sm mb-3">
+      <label for="imagen2" class="form-label">Imagen Perfil 2</label>
+      <input
+        formControlName="imagen2"
+        type="file"
+        class="form-control"
+        placeholder="Imagen Perfil 2"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formPaciente.controls['imagen2'].errors?.['required'] &&
+        formPaciente.controls['imagen2'].touched
+                "
+      >
+        La imagen de perfil 2 es requerida
+      </small>
+    </div>
+  </div>
+
+  <!-- <button type="submit" class="btn-enviar">Registrar Paciente</button> -->
+  <button class="btn">Registrar</button>
+</form>
