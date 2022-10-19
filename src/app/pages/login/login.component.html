@@ -1,1 +1,100 @@
-<p>login works!</p>
+<app-navbar></app-navbar>
+<div class="contenedor-spinner" *ngIf="spinner">
+  <div class="wrapper">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+<div class="login-container"></div>
+<form
+  [formGroup]="formLogin"
+  class="contenedor-form text-focus-in"
+  (ngSubmit)="loginUser()"
+>
+  <h2>INICIO DE SESIÓN</h2>
+
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <!-- INPUT MAIL -->
+        <div class="col-sm mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            formControlName="email"
+            type="email"
+            class="form-control"
+            placeholder="Email"
+          />
+          <small
+            class="mensaje-error"
+            *ngIf="
+        formLogin.controls['email'].errors?.['required'] &&
+        formLogin.controls['email'].touched
+                          "
+          >
+            El Email es requerido
+          </small>
+        </div>
+      </div>
+      <div class="row">
+        <!-- INPUT PASSWORD -->
+        <div class="col-sm mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input
+            formControlName="password"
+            type="password"
+            class="form-control"
+            placeholder="Contraseña"
+          />
+          <small
+            class="mensaje-error"
+            *ngIf="
+        formLogin.controls['password'].errors?.['required'] &&
+        formLogin.controls['password'].touched
+                          "
+          >
+            La contraseña es requerida
+          </small>
+        </div>
+      </div>
+      <button class="btn">Iniciar Sesión</button>
+    </div>
+    <div
+      class="col"
+      style="
+        text-align: center;
+        color: #fff;
+        text-shadow: 1px 1px #000;
+        background-color: rgba(0, 0, 0, 0.568);
+        border-radius: 10px;
+      "
+    >
+      <div class="row">
+        <h3 style="color: rgb(255, 255, 255)">Inicio rápido</h3>
+        <h5 style="color: rgb(207, 204, 204)">
+          Selecciona un usuario y luego inicia sesión.
+        </h5>
+        <div class="col img">
+          <p>Paciente</p>
+          <img
+            (click)="loadUser(1)"
+            src="../../../assets/paciente1.png"
+            alt=""
+          />
+        </div>
+        <div class="col img">
+          <p>Especialista</p>
+          <img (click)="loadUser(2)" src="../../../assets/medico2.png" alt="" />
+        </div>
+        <div class="col img">
+          <p>Administrador</p>
+          <img (click)="loadUser(3)" src="../../../assets/admin.png" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

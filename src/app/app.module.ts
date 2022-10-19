@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BienvenidaComponent } from './pages/bienvenida/bienvenida.component';
@@ -11,6 +10,18 @@ import { RegisterComponent } from './pages/register/register.component';
 import { FormAltaPacienteComponent } from './components/form-alta-paciente/form-alta-paciente.component';
 import { FormAltaEspecialistaComponent } from './components/form-alta-especialista/form-alta-especialista.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { provideFirestore,getFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
+import { UsuariosAdminComponent } from './pages/usuarios-admin/usuarios-admin.component';
+import { FormAltaAdministradorComponent } from './components/form-alta-administrador/form-alta-administrador.component';
 
 @NgModule({
   declarations: [
@@ -20,14 +31,24 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     RegisterComponent,
     FormAltaPacienteComponent,
-    FormAltaEspecialistaComponent
+    FormAltaEspecialistaComponent,
+    UsuariosAdminComponent,
+    FormAltaAdministradorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
+    AngularFireStorageModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      preventDuplicates: true,
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]

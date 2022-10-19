@@ -126,3 +126,20 @@
   transition: 0.4s ease;
   z-index: -1;
 }
+
+.btn-logout:hover {
+  height: 100%;
+  transition-delay: 0.4s;
+  color: rgb(255, 0, 0);
+}
+.btn-logout::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 0;
+  width: 100%;
+  background-color: #fdff84;
+  transition: 0.4s ease;
+  z-index: -1;
+}

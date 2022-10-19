@@ -1,4 +1,16 @@
 <app-navbar></app-navbar>
+
+<div class="contenedor-spinner" *ngIf="spinner">
+  <div class="wrapper">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+
 <div class="opcion-registros row" *ngIf="!formPaciente && !formEspecialista">
   <div class="col text-focus-in" (click)="goToFormPaciente()">
     <div>
@@ -14,9 +26,11 @@
   </div>
 </div>
 <div class="registro-paciente" *ngIf="formPaciente">
+  <button class="btn-volver text-focus-in" (click)="goToRegistro()">Volver</button>
   <app-form-alta-paciente></app-form-alta-paciente>
 </div>
 <div class="registro-especialista" *ngIf="formEspecialista">
+  <button class="btn-volver text-focus-in" (click)="goToRegistro()">Volver</button>
   <app-form-alta-especialista></app-form-alta-especialista>
 </div>
 <div class="registro-container"></div>

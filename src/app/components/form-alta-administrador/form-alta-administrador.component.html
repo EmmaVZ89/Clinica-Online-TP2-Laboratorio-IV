@@ -1,0 +1,168 @@
+<div class="contenedor-spinner-alta" *ngIf="spinner">
+  <div class="wrapper">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+
+<form
+  [formGroup]="formAdministrador"
+  class="contenedor-form text-focus-in"
+  (ngSubmit)="registerAdministrador()"
+>
+  <h2>REGISTRO DE ADMINISTRADOR</h2>
+
+  <div class="row">
+    <!-- INPUT NOMBRE -->
+    <div class="col-sm mb-3">
+      <!-- <label for="nombre" class="form-label">Nombre</label> -->
+      <input
+        formControlName="nombre"
+        type="text"
+        class="form-control"
+        id="nombre"
+        placeholder="Nombre"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formAdministrador.controls['nombre'].errors?.['required'] &&
+        formAdministrador.controls['nombre'].touched
+                            "
+      >
+        El Nombre es requerido
+      </small>
+    </div>
+    <!-- INPUT APELLIDO -->
+    <div class="col-sm mb-3">
+      <!-- <label for="apellido" class="form-label">Apellido</label> -->
+      <input
+        formControlName="apellido"
+        type="text"
+        class="form-control"
+        id="apellido"
+        placeholder="Apellido"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formAdministrador.controls['apellido'].errors?.['required'] &&
+        formAdministrador.controls['apellido'].touched
+                            "
+      >
+        El Apellido es requerido
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- INPUT EDAD -->
+    <div class="col-sm mb-3">
+      <!-- <label for="edad" class="form-label">Edad</label> -->
+      <input
+        formControlName="edad"
+        type="number"
+        class="form-control"
+        placeholder="Edad"
+        min="18"
+        max="99"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+              formAdministrador.controls['edad'].errors?.['required'] &&
+              formAdministrador.controls['edad'].touched
+                                "
+      >
+        La Edad es requerida
+      </small>
+      <small
+        class="mensaje-error"
+        *ngIf="
+              formAdministrador.controls['edad'].errors?.['min'] ||
+                                  (formAdministrador.controls['edad'].errors?.['max'] &&
+                                  formAdministrador.controls['edad'].touched)
+                                "
+      >
+        La Edad debe ser de 18 a 99 años
+      </small>
+    </div>
+
+    <!-- INPUT DNI -->
+    <div class="col-sm mb-3">
+      <!-- <label for="dni" class="form-label">N° DNI</label> -->
+      <input
+        formControlName="dni"
+        type="number"
+        class="form-control"
+        placeholder="N° DNI"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formAdministrador.controls['dni'].errors?.['required'] &&
+        formAdministrador.controls['dni'].touched
+                                "
+      >
+        El DNI es requerido
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- INPUT MAIL -->
+    <div class="col-sm mb-3">
+      <!-- <label for="email" class="form-label">Email</label> -->
+      <input
+        formControlName="email"
+        type="email"
+        class="form-control"
+        placeholder="Email"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formAdministrador.controls['email'].errors?.['required'] &&
+        formAdministrador.controls['email'].touched
+                          "
+      >
+        El Email es requerido
+      </small>
+    </div>
+    <!-- INPUT PASSWORD -->
+    <div class="col-sm mb-3">
+      <!-- <label for="password" class="form-label">Contraseña</label> -->
+      <input
+        formControlName="password"
+        type="password"
+        class="form-control"
+        placeholder="Contraseña"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formAdministrador.controls['password'].errors?.['required'] &&
+        formAdministrador.controls['password'].touched
+                          "
+      >
+        La contraseña es requerida
+      </small>
+    </div>
+    <!-- INPUT IMAGEN -->
+    <div class="col-sm mb-3">
+      <!-- <label for="imagen1" class="form-label">Imágen Perfil</label> -->
+      <input
+        type="file"
+        class="form-control"
+        placeholder="Imágen Perfil"
+        (change)="uploadImage($event)"
+      />
+    </div>
+  </div>
+
+  <button class="btn">Registrar</button>
+</form>

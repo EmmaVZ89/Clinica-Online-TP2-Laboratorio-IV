@@ -6,8 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  formPaciente: boolean = true;
+  formPaciente: boolean = false;
   formEspecialista: boolean = false;
+  spinner: boolean = false;
 
   constructor() {}
 
@@ -19,5 +20,10 @@ export class RegisterComponent implements OnInit {
 
   goToFormEspecialista() {
     this.formEspecialista = true;
+  }
+
+  goToRegistro() {
+    this.formPaciente = false;
+    this.formEspecialista = false;
   }
 }

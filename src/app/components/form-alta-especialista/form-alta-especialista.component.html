@@ -1,1 +1,210 @@
-<p>form-alta-especialista works!</p>
+
+<div class="contenedor-spinner-alta" *ngIf="spinner">
+  <div class="wrapper">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+
+<form
+  [formGroup]="formEspecialista"
+  class="contenedor-form text-focus-in"
+  (ngSubmit)="registerEspecialista()"
+>
+  <h2>REGISTRO DE ESPECIALISTA</h2>
+
+  <div class="row">
+    <!-- INPUT NOMBRE -->
+    <div class="col-sm mb-3">
+      <!-- <label for="nombre" class="form-label">Nombre</label> -->
+      <input
+        formControlName="nombre"
+        type="text"
+        class="form-control"
+        id="nombre"
+        placeholder="Nombre"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['nombre'].errors?.['required'] &&
+        formEspecialista.controls['nombre'].touched
+                            "
+      >
+        El Nombre es requerido
+      </small>
+    </div>
+    <!-- INPUT APELLIDO -->
+    <div class="col-sm mb-3">
+      <!-- <label for="apellido" class="form-label">Apellido</label> -->
+      <input
+        formControlName="apellido"
+        type="text"
+        class="form-control"
+        id="apellido"
+        placeholder="Apellido"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['apellido'].errors?.['required'] &&
+        formEspecialista.controls['apellido'].touched
+                            "
+      >
+        El Apellido es requerido
+      </small>
+    </div>
+    <!-- INPUT EDAD -->
+    <div class="col-sm mb-3">
+      <!-- <label for="edad" class="form-label">Edad</label> -->
+      <input
+        formControlName="edad"
+        type="number"
+        class="form-control"
+        placeholder="Edad"
+        min="18"
+        max="99"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['edad'].errors?.['required'] &&
+        formEspecialista.controls['edad'].touched
+                          "
+      >
+        La Edad es requerida
+      </small>
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['edad'].errors?.['min'] ||
+                            (formEspecialista.controls['edad'].errors?.['max'] &&
+                            formEspecialista.controls['edad'].touched)
+                          "
+      >
+        La Edad debe ser de 18 a 99 años
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- INPUT DNI -->
+    <div class="col-sm mb-3">
+      <!-- <label for="dni" class="form-label">N° DNI</label> -->
+      <input
+        formControlName="dni"
+        type="number"
+        class="form-control"
+        placeholder="N° DNI"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['dni'].errors?.['required'] &&
+        formEspecialista.controls['dni'].touched
+                                "
+      >
+        El DNI es requerido
+      </small>
+    </div>
+    <!-- INPUT ESPECIALIDAD -->
+    <div class="col-sm mb-3">
+      <select
+        formControlName="especialidad"
+        class="form-control"
+        (change)="addEspecialidad()"
+      >
+        <option value="" disabled>Elegir especialidad...</option>
+        <option value="clinico">Clinico</option>
+        <option value="odontologo">Odontologo</option>
+        <option value="oftalmologo">Oftalmologo</option>
+        <option value="">Agregar otra especialidad</option>
+      </select>
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['especialidad'].errors?.['required'] &&
+        formEspecialista.controls['especialidad'].touched && !especialidad
+                "
+      >
+        La especialidad es requerida
+      </small>
+    </div>
+    <!-- INPUT AGREGAR ESPECIALIDAD -->
+    <div *ngIf="especialidad" class="col-sm mb-3">
+      <!-- <label for="apellido" class="form-label">Apellido</label> -->
+      <input
+        formControlName="especialidad"
+        type="text"
+        class="form-control"
+        placeholder="Especialidad"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['especialidad'].errors?.['required'] &&
+        formEspecialista.controls['especialidad'].touched
+                                  "
+      >
+        La Especialidad es requerida
+      </small>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- INPUT MAIL -->
+    <div class="col-sm mb-3">
+      <!-- <label for="email" class="form-label">Email</label> -->
+      <input
+        formControlName="email"
+        type="email"
+        class="form-control"
+        placeholder="Email"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['email'].errors?.['required'] &&
+        formEspecialista.controls['email'].touched
+                          "
+      >
+        El Email es requerido
+      </small>
+    </div>
+    <!-- INPUT PASSWORD -->
+    <div class="col-sm mb-3">
+      <!-- <label for="password" class="form-label">Contraseña</label> -->
+      <input
+        formControlName="password"
+        type="password"
+        class="form-control"
+        placeholder="Contraseña"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+        formEspecialista.controls['password'].errors?.['required'] &&
+        formEspecialista.controls['password'].touched
+                          "
+      >
+        La contraseña es requerida
+      </small>
+    </div>
+    <!-- INPUT IMAGEN -->
+    <div class="col-sm mb-3">
+      <!-- <label for="imagen1" class="form-label">Imágen Perfil</label> -->
+      <input
+        type="file"
+        class="form-control"
+        placeholder="Imágen Perfil"
+        (change)="uploadImage($event)"
+      />
+    </div>
+  </div>
+
+  <button class="btn">Registrar</button>
+</form>

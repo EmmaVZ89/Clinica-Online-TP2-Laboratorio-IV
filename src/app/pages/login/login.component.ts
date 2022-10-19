@@ -1,15 +1,128 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from 'src/app/services/notification.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { User } from 'src/app/models/user';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  formLogin: FormGroup;
+  userLogin: User = new User();
+  spinner: boolean = false;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    private formBuilder: FormBuilder,
+    private notificationService: NotificationService,
+    private authService: AuthService,
+    private router: Router
+  ) {
+    this.formLogin = this.formBuilder.group({
+      email: ['', [Validators.required]],
+      password: ['', [Validators.required]],
+    });
   }
 
+  ngOnInit(): void {}
+
+  loginUser() {
+    if (this.formLogin.valid) {
+      this.spinner = true;
+      this.userLogin.email = this.formLogin.getRawValue().email;
+      this.userLogin.password = this.formLogin.getRawValue().password;
+      this.authService
+        .userLogin(this.userLogin.email, this.userLogin.password)
+        .then((data) => {
+          this.authService.user$.subscribe((user: any) => {
+            if (user) {
+              if (user.test) {
+                if (user.perfil == 'especialista' && user.aprobado == false) {
+                  this.notificationService.showWarning(
+                    'Tu Cuenta no esta aprobada por un Administrador',
+                    'Inicio de Sesión'
+                  );
+                  this.spinner = false;
+                  this.authService.userLogout();
+                } else {
+                  this.authService.isLogged = true;
+                  this.notificationService.showSuccess(
+                    'Inicio exitoso, redirigiendo...',
+                    'Inicio de Sesión'
+                  );
+                  setTimeout(() => {
+                    this.spinner = false;
+                    this.router.navigate(['']);
+                  }, 2000);
+                }
+              } else {
+                if (!data?.user?.emailVerified) {
+                  data?.user?.sendEmailVerification();
+                  this.notificationService.showWarning(
+                    'Debes verificar tu email!',
+                    'Inicio de Sesión'
+                  );
+                  this.spinner = false;
+                  this.authService.userLogout();
+                } else {
+                  if (user.perfil == 'especialista' && user.aprobado == false) {
+                    this.notificationService.showWarning(
+                      'Tu Cuenta no esta aprobada por un Administrador',
+                      'Inicio de Sesión'
+                    );
+                    this.spinner = false;
+                    this.authService.userLogout();
+                  } else {
+                    this.authService.isLogged = true;
+                    this.notificationService.showSuccess(
+                      'Inicio exitoso, redirigiendo...',
+                      'Inicio de Sesión'
+                    );
+                    setTimeout(() => {
+                      this.spinner = false;
+                      this.router.navigate(['']);
+                    }, 2000);
+                  }
+                }
+              }
+            }
+          });
+        });
+    } else {
+      this.notificationService.showWarning(
+        'Debes completar todos los campos requeridos',
+        'Inicio de Sesión'
+      );
+    }
+  } // end of loginUser
+
+  loadUser(option: number) {
+    switch (option) {
+      case 1:
+        this.formLogin.setValue({
+          email: 'pacienteTest1@mail.com',
+          password: 'pacienteTest1',
+        });
+        break;
+      case 2:
+        this.formLogin.setValue({
+          email: 'especialistaTest1@mail.com',
+          password: 'especialistaTest1',
+        });
+        break;
+      case 3:
+        this.formLogin.setValue({
+          email: 'adminTest1@mail.com',
+          password: 'adminTest1',
+        });
+        break;
+    }
+    this.notificationService.showInfo(
+      'Usurario cargado, puedes iniciar sesión!',
+      'Inicio de Sesión'
+    );
+  } // end of loadUser
 }

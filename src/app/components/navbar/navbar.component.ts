@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,9 +8,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(private router: Router) {}
+  user: any = null;
 
-  ngOnInit(): void {}
+  constructor(private router: Router, public authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.authService.user$.subscribe((user: any) => {
+      if (user) {
+        this.user = user;
+        this.authService.isLogged = true;
+        if (this.user.perfil == 'administrador') {
+          this.authService.isAdmin = true;
+        }
+      }
+    });
+  }
 
   goToRegister() {
     this.router.navigate(['/registro']);
@@ -17,5 +30,11 @@ export class NavbarComponent implements OnInit {
 
   goToLogin() {
     this.router.navigate(['/login']);
+  }
+
+  logout() {
+    this.authService.userLogout();
+    this.user = null;
+    this.authService.isLogged = false;
   }
 }

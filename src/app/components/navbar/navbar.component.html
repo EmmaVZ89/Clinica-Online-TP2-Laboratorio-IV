@@ -18,77 +18,19 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" routerLink="">
-            <!-- <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Home&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Home&nbsp;</span
-              >
-            </button> -->
             <button class="btn-nav">Home</button>
           </a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link active" aria-current="page" routerLink="/quiensoy">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Quien&nbsp;Soy&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Quien&nbsp;Soy&nbsp;</span
-              >
-            </button>
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/usuarios-admin"
+            *ngIf="this.authService.isAdmin"
+          >
+            <button class="btn-nav">USUARIOS</button>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/juegos">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Juegos&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Juegos&nbsp;</span
-              >
-            </button>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/chat">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Chat&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Chat&nbsp;</span
-              >
-            </button>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/encuesta">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Encuesta&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Encuesta&nbsp;</span
-              >
-            </button>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/listado-resultados">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text">&nbsp;Listados&nbsp;</span>
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Listados&nbsp;</span
-              >
-            </button>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/respuestas-encuesta">
-            <button data-text="Awesome" class="button">
-              <span class="actual-text"
-                >&nbsp;Respuestas&nbsp;encuesta&nbsp;</span
-              >
-              <span class="hover-text" aria-hidden="true"
-                >&nbsp;Respuestas&nbsp;encuesta&nbsp;</span
-              >
-            </button>
-          </a>
-        </li> -->
       </ul>
       <!-- <span *ngIf="user" class="userInfo">
         <span class="fa-icon" style="margin-right: 10px"
@@ -99,17 +41,29 @@
         </span>
       </span> -->
 
-      <button class="btn-nav btn-registro" (click)="goToRegister()">
+      <button
+        class="btn-nav btn-registro"
+        (click)="goToRegister()"
+        *ngIf="!this.authService.isLogged"
+      >
         <span>Registro</span>
       </button>
 
-      <button class="btn-nav btn-login" (click)="goToLogin()">
+      <button
+        class="btn-nav btn-login"
+        (click)="goToLogin()"
+        *ngIf="!this.authService.isLogged"
+      >
         <span>Login</span>
       </button>
 
-      <!-- <button class="btn-shine btn-logout btn">
+      <button
+        class="btn-nav btn-logout"
+        (click)="logout()"
+        *ngIf="this.authService.isLogged"
+      >
         <span>Logout</span>
-      </button> -->
+      </button>
     </div>
   </div>
 </nav>
