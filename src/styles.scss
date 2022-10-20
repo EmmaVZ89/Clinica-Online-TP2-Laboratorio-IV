@@ -293,7 +293,7 @@ button.toast-close-button {
 .contenedor-spinner {
   background-color: rgba(0, 0, 0, 0.534);
   width: 100%;
-  height: 84vh;
+  height: 85vh;
   position: absolute;
   z-index: 300;
 }
@@ -305,3 +305,6 @@ button.toast-close-button {
   border-radius: 1rem;
   z-index: 300;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

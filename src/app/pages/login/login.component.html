@@ -1,4 +1,5 @@
 <app-navbar></app-navbar>
+
 <div class="contenedor-spinner" *ngIf="spinner">
   <div class="wrapper">
     <div class="circle"></div>
@@ -9,19 +10,95 @@
     <div class="shadow"></div>
   </div>
 </div>
-<div class="login-container"></div>
+
+<div class="login-container">
+  <div class="example-button-row">
+    <button type="button" color="light" mat-fab [matMenuTriggerFor]="paciente1">
+      <img class="img-btn" src="../../../assets/paciente1.png" alt="" />
+    </button>
+    <mat-menu #paciente1="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Paciente 1</p>
+      <button type="button" color="primary" mat-menu-item (click)="loadUser(1)">
+        Cargar campos
+      </button>
+    </mat-menu>
+
+    <button type="button" color="light" mat-fab [matMenuTriggerFor]="paciente2">
+      <img class="img-btn" src="../../../assets/paciente2.png" alt="" />
+    </button>
+    <mat-menu #paciente2="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Paciente 2</p>
+      <button type="button" mat-menu-item (click)="loadUser(2)">
+        Cargar campos
+      </button>
+    </mat-menu>
+
+    <button type="button" color="light" mat-fab [matMenuTriggerFor]="paciente3">
+      <img class="img-btn" src="../../../assets/paciente3.png" alt="" />
+    </button>
+    <mat-menu #paciente3="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Paciente 3</p>
+      <button type="button" mat-menu-item (click)="loadUser(3)">
+        Cargar campos
+      </button>
+    </mat-menu>
+
+    <button
+      type="button"
+      color="light"
+      mat-fab
+      [matMenuTriggerFor]="especialista2"
+    >
+      <img class="img-btn" src="../../../assets/medico2.png" alt="" />
+    </button>
+    <mat-menu #especialista2="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Especialista 1</p>
+      <button type="button" mat-menu-item (click)="loadUser(4)">
+        Cargar campos
+      </button>
+    </mat-menu>
+
+    <button
+      type="button"
+      color="light"
+      mat-fab
+      [matMenuTriggerFor]="especialista1"
+    >
+      <img class="img-btn" src="../../../assets/medico1.png" alt="" />
+    </button>
+    <mat-menu #especialista1="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Especialista 2</p>
+      <button type="button" mat-menu-item (click)="loadUser(5)">
+        Cargar campos
+      </button>
+    </mat-menu>
+
+    <button type="button" color="light" mat-fab [matMenuTriggerFor]="admin">
+      <img class="img-btn" src="../../../assets/admin.png" alt="" />
+    </button>
+    <mat-menu #admin="matMenu" yPosition="below">
+      <p style="text-align: center; font-weight: bolder">Administrador</p>
+      <button type="button" mat-menu-item (click)="loadUser(6)">
+        Cargar campos
+      </button>
+    </mat-menu>
+  </div>
+</div>
+
 <form
   [formGroup]="formLogin"
   class="contenedor-form text-focus-in"
   (ngSubmit)="loginUser()"
 >
   <h2>INICIO DE SESIÓN</h2>
-
   <div class="row">
     <div class="col">
       <div class="row">
         <!-- INPUT MAIL -->
-        <div class="col-sm mb-3">
+        <div
+          class="col-sm mb-3"
+          [ngClass]="loadedField ? 'shake-horizontal' : ''"
+        >
           <label for="email" class="form-label">Email</label>
           <input
             formControlName="email"
@@ -42,7 +119,10 @@
       </div>
       <div class="row">
         <!-- INPUT PASSWORD -->
-        <div class="col-sm mb-3">
+        <div
+          class="col-sm mb-3"
+          [ngClass]="loadedField ? 'shake-horizontal' : ''"
+        >
           <label for="password" class="form-label">Contraseña</label>
           <input
             formControlName="password"
@@ -62,39 +142,6 @@
         </div>
       </div>
       <button class="btn">Iniciar Sesión</button>
-    </div>
-    <div
-      class="col"
-      style="
-        text-align: center;
-        color: #fff;
-        text-shadow: 1px 1px #000;
-        background-color: rgba(0, 0, 0, 0.568);
-        border-radius: 10px;
-      "
-    >
-      <div class="row">
-        <h3 style="color: rgb(255, 255, 255)">Inicio rápido</h3>
-        <h5 style="color: rgb(207, 204, 204)">
-          Selecciona un usuario y luego inicia sesión.
-        </h5>
-        <div class="col img">
-          <p>Paciente</p>
-          <img
-            (click)="loadUser(1)"
-            src="../../../assets/paciente1.png"
-            alt=""
-          />
-        </div>
-        <div class="col img">
-          <p>Especialista</p>
-          <img (click)="loadUser(2)" src="../../../assets/medico2.png" alt="" />
-        </div>
-        <div class="col img">
-          <p>Administrador</p>
-          <img (click)="loadUser(3)" src="../../../assets/admin.png" alt="" />
-        </div>
-      </div>
     </div>
   </div>
 </form>

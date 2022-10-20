@@ -22,6 +22,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { UsuariosAdminComponent } from './pages/usuarios-admin/usuarios-admin.component';
 import { FormAltaAdministradorComponent } from './components/form-alta-administrador/form-alta-administrador.component';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -49,6 +53,10 @@ import { FormAltaAdministradorComponent } from './components/form-alta-administr
     ToastrModule.forRoot({
       preventDuplicates: true,
     }),
+    MatSliderModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule
   ],
   providers: [],
   bootstrap: [AppComponent]

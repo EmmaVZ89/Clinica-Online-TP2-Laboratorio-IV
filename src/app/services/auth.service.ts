@@ -6,7 +6,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { User } from '../models/user';
 import { NotificationService } from './notification.service';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 @Injectable({
@@ -38,43 +38,33 @@ export class AuthService {
 
   registerNewUser(newUser: User) {
     this.angularFireAuth
-      .setPersistence(firebase.default.auth.Auth.Persistence.NONE)
-      .then(() => {
-        this.angularFireAuth
-          .createUserWithEmailAndPassword(newUser.email, newUser.password)
-          .then((data) => {
-            data.user?.sendEmailVerification();
-            this.angularFirestore
-              .collection('usuarios')
-              .doc(data.user?.uid)
-              .set({
-                id: data.user?.uid,
-                perfil: newUser.perfil,
-                nombre: newUser.nombre,
-                apellido: newUser.apellido,
-                edad: newUser.edad,
-                dni: newUser.dni,
-                obraSocial: newUser.obraSocial,
-                especialidad: newUser.especialidad,
-                email: newUser.email,
-                password: newUser.password,
-                imagen1: newUser.imagen1,
-                imagen2: newUser.imagen2,
-                aprobado: newUser.aprobado,
-              })
-              .then(() => {
-                this.notifyService.showInfo(
-                  'Verifica tu email',
-                  'Registro exitoso'
-                );
-                // this.userLogout();
-              })
-              .catch((error) => {
-                this.notifyService.showError(
-                  this.createMessage(error.code),
-                  'Error'
-                );
-              });
+      .createUserWithEmailAndPassword(newUser.email, newUser.password)
+      .then((data) => {
+        data.user?.sendEmailVerification();
+        this.angularFirestore
+          .collection('usuarios')
+          .doc(data.user?.uid)
+          .set({
+            id: data.user?.uid,
+            perfil: newUser.perfil,
+            nombre: newUser.nombre,
+            apellido: newUser.apellido,
+            edad: newUser.edad,
+            dni: newUser.dni,
+            obraSocial: newUser.obraSocial,
+            especialidad: newUser.especialidad,
+            email: newUser.email,
+            password: newUser.password,
+            imagen1: newUser.imagen1,
+            imagen2: newUser.imagen2,
+            aprobado: newUser.aprobado,
+          })
+          .then(() => {
+            this.notifyService.showInfo(
+              'Verifica tu email',
+              'Registro exitoso'
+            );
+            // this.userLogout();
           })
           .catch((error) => {
             this.notifyService.showError(
@@ -82,6 +72,9 @@ export class AuthService {
               'Error'
             );
           });
+      })
+      .catch((error) => {
+        this.notifyService.showError(this.createMessage(error.code), 'Error');
       });
   } // end of registerNewUser
 
@@ -121,6 +114,9 @@ export class AuthService {
         'Email y/o contraseña invalidos',
         'Inicio fallido'
       );
+
+      throw error;
+
       return null;
     }
   } // end of userLogin

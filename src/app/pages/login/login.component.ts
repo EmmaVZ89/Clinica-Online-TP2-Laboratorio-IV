@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   formLogin: FormGroup;
   userLogin: User = new User();
   spinner: boolean = false;
+  loadedField: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -90,6 +91,9 @@ export class LoginComponent implements OnInit {
               }
             }
           });
+        })
+        .catch((error) => {
+          this.spinner = false;
         });
     } else {
       this.notificationService.showWarning(
@@ -100,6 +104,7 @@ export class LoginComponent implements OnInit {
   } // end of loginUser
 
   loadUser(option: number) {
+    this.loadedField = true;
     switch (option) {
       case 1:
         this.formLogin.setValue({
@@ -109,11 +114,29 @@ export class LoginComponent implements OnInit {
         break;
       case 2:
         this.formLogin.setValue({
+          email: 'pacienteTest2@mail.com',
+          password: 'pacienteTest2',
+        });
+        break;
+      case 3:
+        this.formLogin.setValue({
+          email: 'pacienteTest3@mail.com',
+          password: 'pacienteTest3',
+        });
+        break;
+      case 4:
+        this.formLogin.setValue({
           email: 'especialistaTest1@mail.com',
           password: 'especialistaTest1',
         });
         break;
-      case 3:
+      case 5:
+        this.formLogin.setValue({
+          email: 'especialistaTest2@mail.com',
+          password: 'especialistaTest2',
+        });
+        break;
+      case 6:
         this.formLogin.setValue({
           email: 'adminTest1@mail.com',
           password: 'adminTest1',
@@ -124,5 +147,8 @@ export class LoginComponent implements OnInit {
       'Usurario cargado, puedes iniciar sesión!',
       'Inicio de Sesión'
     );
+    setTimeout(() => {
+      this.loadedField = false;
+    }, 1000);
   } // end of loadUser
 }

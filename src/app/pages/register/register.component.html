@@ -11,14 +11,14 @@
   </div>
 </div>
 
-<div class="opcion-registros row" *ngIf="!formPaciente && !formEspecialista">
-  <div class="col text-focus-in" (click)="goToFormPaciente()">
+<div class="opcion-registros" *ngIf="!formPaciente && !formEspecialista">
+  <div class="row card-form text-focus-in" (click)="goToFormPaciente()">
     <div>
       <h2>Paciente</h2>
       <img src="../../../assets/paciente.png" alt="imagen paciente" />
     </div>
   </div>
-  <div class="col text-focus-in" (click)="goToFormEspecialista()">
+  <div class="row card-form text-focus-in" (click)="goToFormEspecialista()">
     <div>
       <h2>Especialista</h2>
       <img src="../../../assets/especialista.png" alt="imagen especialista" />
