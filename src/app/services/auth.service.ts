@@ -78,24 +78,10 @@ export class AuthService {
       });
   } // end of registerNewUser
 
-  updateUser(userMod: User) {
+  updateUser(userMod: any) {
     this.angularFirestore
       .doc<any>(`usuarios/${userMod.id}`)
-      .update({
-        id: userMod.id,
-        perfil: userMod.perfil,
-        nombre: userMod.nombre,
-        apellido: userMod.apellido,
-        edad: userMod.edad,
-        dni: userMod.dni,
-        obraSocial: userMod.obraSocial,
-        especialidad: userMod.especialidad,
-        email: userMod.email,
-        password: userMod.password,
-        imagen1: userMod.imagen1,
-        imagen2: userMod.imagen2,
-        aprobado: userMod.aprobado,
-      })
+      .update(userMod)
       .then(() => {})
       .catch((error) => {
         this.notifyService.showError('Ocurrio un error', 'Administrador');
@@ -130,6 +116,37 @@ export class AuthService {
   createUserLog(collectionName: string, log: any) {
     return this.angularFirestore.collection(collectionName).add(log);
   } // end of createUserLog
+
+  createTurnList(turn: any) {
+    console.log('Entra al create');
+    this.angularFirestore
+      .collection<any>('turnos')
+      .add(turn)
+      .then((data) => {
+        this.angularFirestore.collection('turnos').doc(data.id).set({
+          id: data.id,
+          especialista: turn.especialista,
+          turnos: turn.turnos,
+        });
+      });
+  }
+
+  updateTurnList(turn: any) {
+    console.log('Entra al update');
+    this.angularFirestore
+      .doc<any>(`turnos/${turn.id}`)
+      .update(turn)
+      .then(() => {})
+      .catch((error) => {
+        console.log(error.message);
+        this.notifyService.showError('Ocurrio un error', 'Administrador');
+      });
+  }
+
+  getTurnList() {
+    const collection = this.angularFirestore.collection<any>('turnos');
+    return collection.valueChanges();
+  }
 
   private createMessage(errorCode: string): string {
     let message: string = '';

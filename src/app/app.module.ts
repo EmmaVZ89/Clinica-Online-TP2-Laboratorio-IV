@@ -26,6 +26,12 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import { MiPerfilComponent } from './pages/mi-perfil/mi-perfil.component';
+import { SolicitarTurnoComponent } from './pages/solicitar-turno/solicitar-turno.component';
+import { DatePipe } from './pipes/date.pipe';
+import { DayDatePipe } from './pipes/day-date.pipe';
+import { TurnosComponent } from './pages/turnos/turnos.component';
+import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +43,13 @@ import {MatMenuModule} from '@angular/material/menu';
     FormAltaPacienteComponent,
     FormAltaEspecialistaComponent,
     UsuariosAdminComponent,
-    FormAltaAdministradorComponent
+    FormAltaAdministradorComponent,
+    MiPerfilComponent,
+    SolicitarTurnoComponent,
+    DatePipe,
+    DayDatePipe,
+    TurnosComponent,
+    MisTurnosComponent
   ],
   imports: [
     BrowserModule,

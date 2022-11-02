@@ -54,10 +54,8 @@ export class LoginComponent implements OnInit {
                     'Inicio exitoso, redirigiendo...',
                     'Inicio de Sesión'
                   );
-                  setTimeout(() => {
-                    this.spinner = false;
-                    this.router.navigate(['']);
-                  }, 2000);
+                  this.spinner = false;
+                  this.router.navigate(['']);
                 }
               } else {
                 if (!data?.user?.emailVerified) {
@@ -82,10 +80,8 @@ export class LoginComponent implements OnInit {
                       'Inicio exitoso, redirigiendo...',
                       'Inicio de Sesión'
                     );
-                    setTimeout(() => {
-                      this.spinner = false;
-                      this.router.navigate(['']);
-                    }, 2000);
+                    this.spinner = false;
+                    this.router.navigate(['']);
                   }
                 }
               }

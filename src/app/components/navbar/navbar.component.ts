@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavbarComponent implements OnInit {
   user: any = null;
+  isPaciente: boolean = false;
+  isEspecialista: boolean = false;
 
   constructor(private router: Router, public authService: AuthService) {}
 
@@ -19,6 +21,10 @@ export class NavbarComponent implements OnInit {
         this.authService.isLogged = true;
         if (this.user.perfil == 'administrador') {
           this.authService.isAdmin = true;
+        } else if (this.user.perfil == 'paciente') {
+          this.isPaciente = true;
+        } else {
+          this.isEspecialista = true;
         }
       }
     });
@@ -36,5 +42,6 @@ export class NavbarComponent implements OnInit {
     this.authService.userLogout();
     this.user = null;
     this.authService.isLogged = false;
+    this.router.navigate(['']);
   }
 }

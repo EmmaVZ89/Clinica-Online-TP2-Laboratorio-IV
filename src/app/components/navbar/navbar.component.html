@@ -21,6 +21,38 @@
             <button class="btn-nav">Home</button>
           </a>
         </li>
+        <li class="nav-item" *ngIf="user">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/mi-perfil"
+          >
+            <button class="btn-nav">Mi Perfil</button>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="this.authService.isAdmin || isPaciente">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/solicitar-turno"
+          >
+            <button class="btn-nav">Solicitar Turno</button>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="this.authService.isAdmin">
+          <a class="nav-link active" aria-current="page" routerLink="/turnos">
+            <button class="btn-nav">Turnos</button>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="this.isPaciente || this.isEspecialista">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/mis-turnos"
+          >
+            <button class="btn-nav">Mis Turnos</button>
+          </a>
+        </li>
         <li class="nav-item">
           <a
             class="nav-link active"
@@ -32,14 +64,30 @@
           </a>
         </li>
       </ul>
-      <!-- <span *ngIf="user" class="userInfo">
-        <span class="fa-icon" style="margin-right: 10px"
-          ><fa-icon [icon]="userIcon"></fa-icon
-        ></span>
-        <span style="color: white" class="navbar-brand" href="#">
-          {{ user.userName }}
-        </span>
-      </span> -->
+
+      <span *ngIf="authService.isLogged" class="userInfo">
+        <button
+          type="button"
+          color="light"
+          mat-fab
+          [matMenuTriggerFor]="paciente1"
+        >
+          <img class="img-btn" src="{{ user.imagen1 }}" alt="usuario" />
+        </button>
+        <mat-menu #paciente1="matMenu" yPosition="below">
+          <p style="text-align: center; font-weight: bolder">
+            {{ user.nombre }}
+          </p>
+          <button
+            type="button"
+            color="primary"
+            mat-menu-item
+            (click)="logout()"
+          >
+            LOGOUT
+          </button>
+        </mat-menu>
+      </span>
 
       <button
         class="btn-nav btn-registro"
@@ -57,13 +105,13 @@
         <span>Login</span>
       </button>
 
-      <button
+      <!-- <button
         class="btn-nav btn-logout"
         (click)="logout()"
         *ngIf="this.authService.isLogged"
       >
         <span>Logout</span>
-      </button>
+      </button> -->
     </div>
   </div>
 </nav>

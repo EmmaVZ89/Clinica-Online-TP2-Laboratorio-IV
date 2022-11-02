@@ -210,6 +210,44 @@
     </div>
   </div>
 
+  <div class="row">
+    <!-- INPUT CAPTCHA -->
+    <div class="col col-3 mb-3">
+      <p
+        style="
+          font-size: 2rem;
+          text-align: center;
+          color: blue;
+          background: #000;
+          padding: 0.6rem;
+          border-radius: 10px;
+          text-transform: uppercase;
+          font-weight: bolder;
+          text-shadow: 1px 1px 1px #fff;
+        "
+      >
+        {{ captcha }}
+      </p>
+    </div>
+    <div class="col col-3 mb-3">
+      <input
+        formControlName="captcha"
+        type="text"
+        class="form-control"
+        placeholder="CAPTCHA"
+      />
+      <small
+        class="mensaje-error"
+        *ngIf="
+                formPaciente.controls['captcha'].errors?.['required'] &&
+                formPaciente.controls['captcha'].touched
+                        "
+      >
+        El Captcha es requerido
+      </small>
+    </div>
+  </div>
+
   <!-- <button type="submit" class="btn-enviar">Registrar Paciente</button> -->
   <button class="btn">Registrar</button>
 </form>

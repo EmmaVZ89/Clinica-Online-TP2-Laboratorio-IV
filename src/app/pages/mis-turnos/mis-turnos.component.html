@@ -1,0 +1,1145 @@
+<app-navbar></app-navbar>
+<div>
+  <div class="contenedor-spinner" *ngIf="spinner">
+    <div class="wrapper">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
+      <div class="shadow"></div>
+    </div>
+  </div>
+
+  <div class="turnos" *ngIf="isPaciente">
+    <h3>MIS TURNOS</h3>
+    <label>Filtros: </label>
+    <button
+      class="btn m-2"
+      [ngClass]="botonesEspecialidad ? 'btn-primary' : 'btn-info'"
+      (click)="verBotonesEspecialidades()"
+    >
+      Por Especialidad
+    </button>
+    <button
+      class="btn"
+      [ngClass]="vistaListadoDeEspecialistas ? 'btn-primary' : 'btn-info'"
+      (click)="verListaDeEspecialistas()"
+    >
+      Por Especialista
+    </button>
+
+    <div class="contenedor-btn-especialidades" *ngIf="botonesEspecialidad">
+      <button
+        class="btn m-2"
+        [ngClass]="btnClinico ? 'btn-danger' : 'btn-warning'"
+        (click)="filtrarPorEspecialidad('clinico')"
+      >
+        CLINICO
+      </button>
+      <button
+        class="btn m-2"
+        [ngClass]="btnOdontologo ? 'btn-danger' : 'btn-warning'"
+        (click)="filtrarPorEspecialidad('odontologo')"
+      >
+        ODONTOLOGO
+      </button>
+      <button
+        class="btn m-2"
+        [ngClass]="btnOftalmologo ? 'btn-danger' : 'btn-warning'"
+        (click)="filtrarPorEspecialidad('oftalmologo')"
+      >
+        OFTALMOLOGO
+      </button>
+    </div>
+
+    <!-- LISTA GENERAL DE TURNOS -->
+    <div
+      class="tabla-usuario text-focus-in"
+      *ngIf="!filtroEspecialidad && !vistaListadoDeEspecialistas"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Especialista</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Obra Social</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let turn of turnosDelPaciente"
+          >
+            <td>{{ turn.fecha | dayDate }}</td>
+            <td>
+              {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+            </td>
+            <td>{{ turn.especialidad }}</td>
+            <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+            <td>{{ turn.paciente.obraSocial }}</td>
+            <td style="padding-top: 1rem; padding-bottom: 1rem">
+              <span class="estado">{{ turn.estado }}</span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="cancelarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado'
+                "
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacion(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="comentarioCancelacion"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="verComentario(turn)"
+                *ngIf="turn.comentarioPaciente"
+              >
+                Ver Reseña
+              </button>
+              <br
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                disabled=""
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="turn.comentarioPaciente"
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-warning btn-confirmar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="calificarTurno(turn)"
+                *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+              >
+                Calificar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCalificacion(turn)"
+                *ngIf="
+                  vistaComentarioCalificacion &&
+                  turnoACalificar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de calificación..."
+                [(ngModel)]="comentarioCalificacion"
+                *ngIf="
+                  vistaComentarioCalificacion &&
+                  turnoACalificar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LISTA FILTRADA POR ESPECIALIDADES -->
+    <div
+      class="tabla-usuario text-focus-in"
+      *ngIf="filtroEspecialidad && !vistaListadoDeEspecialistas"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Especialista</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Obra Social</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let turn of listaPorEspecialidad"
+          >
+            <td>{{ turn.fecha | dayDate }}</td>
+            <td>
+              {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+            </td>
+            <td>{{ turn.especialidad }}</td>
+            <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+            <td>{{ turn.paciente.obraSocial }}</td>
+            <td style="padding-top: 1rem; padding-bottom: 1rem">
+              <span class="estado">{{ turn.estado }}</span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="cancelarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado'
+                "
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacion(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="comentarioCancelacion"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="verComentario(turn)"
+                *ngIf="turn.comentarioPaciente"
+              >
+                Ver Reseña
+              </button>
+              <br
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                disabled=""
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="turn.comentarioPaciente"
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-warning btn-confirmar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="calificarTurno(turn)"
+                *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+              >
+                Calificar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCalificacion(turn)"
+                *ngIf="
+                  vistaComentarioCalificacion &&
+                  turnoACalificar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de calificación..."
+                [(ngModel)]="comentarioCalificacion"
+                *ngIf="
+                  vistaComentarioCalificacion &&
+                  turnoACalificar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LISTA DE ESPECIALISTAS -->
+    <div *ngIf="vistaListadoDeEspecialistas">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Apellido</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let especialista of listaDeEspecialistas"
+          >
+            <td>{{ especialista.apellido }}</td>
+            <td>
+              {{ especialista.nombre }}
+            </td>
+            <td>
+              <span *ngFor="let esp of especialista.especialidad"
+                >{{ esp.nombre }},
+              </span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-especialista"
+                (click)="elegirEspecialista(especialista)"
+              >
+                ELEGIR
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tabla-usuario text-focus-in">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <th scope="col">Especialista</th>
+              <th scope="col">Especialidad</th>
+              <th scope="col">Paciente</th>
+              <th scope="col">Obra Social</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="tr-tabla"
+              style="cursor: pointer"
+              *ngFor="let turn of listaPorEspecialista"
+            >
+              <td>{{ turn.fecha | dayDate }}</td>
+              <td>
+                {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+              </td>
+              <td>{{ turn.especialidad }}</td>
+              <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+              <td>{{ turn.paciente.obraSocial }}</td>
+              <td style="padding-top: 1rem; padding-bottom: 1rem">
+                <span class="estado">{{ turn.estado }}</span>
+              </td>
+
+              <td>
+                <button
+                  class="btn btn-secondary btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="cancelarTurno(turn)"
+                  *ngIf="
+                    turn.estado != 'aceptado' &&
+                    turn.estado != 'realizado' &&
+                    turn.estado != 'rechazado' &&
+                    turn.estado != 'cancelado'
+                  "
+                >
+                  Cancelar
+                </button>
+                <button
+                  class="btn btn-success btn-confirmar"
+                  style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                  (click)="confirmarCancelacion(turn)"
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                >
+                  Confirmar
+                </button>
+                <br
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  placeholder="Comentario de cancelación..."
+                  [(ngModel)]="comentarioCancelacion"
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <button
+                  class="btn btn-secondary btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="verComentario(turn)"
+                  *ngIf="turn.comentarioPaciente"
+                >
+                  Ver Reseña
+                </button>
+                <br
+                  *ngIf="
+                    vistaComentario &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <input
+                  disabled=""
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  placeholder="Comentario de cancelación..."
+                  [(ngModel)]="turn.comentarioPaciente"
+                  *ngIf="
+                    vistaComentario &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <button
+                  class="btn btn-warning btn-confirmar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="calificarTurno(turn)"
+                  *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+                >
+                  Calificar
+                </button>
+                <button
+                  class="btn btn-success btn-confirmar"
+                  style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                  (click)="confirmarCalificacion(turn)"
+                  *ngIf="
+                    vistaComentarioCalificacion &&
+                    turnoACalificar.fecha.seconds == turn.fecha.seconds
+                  "
+                >
+                  Confirmar
+                </button>
+                <br
+                  *ngIf="turn.estado == 'realizado' && !turn.comentarioPaciente"
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  placeholder="Comentario de calificación..."
+                  [(ngModel)]="comentarioCalificacion"
+                  *ngIf="
+                    vistaComentarioCalificacion &&
+                    turnoACalificar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="turnos" *ngIf="isEspecialista">
+    <h3>MIS TURNOS</h3>
+    <label>Filtros: </label>
+    <button
+      class="btn m-2"
+      [ngClass]="botonesEspecialidad ? 'btn-primary' : 'btn-info'"
+      (click)="verBotonesEspecialidades()"
+    >
+      Por Especialidad
+    </button>
+    <button
+      class="btn"
+      [ngClass]="vistaListadoDeEspecialistas ? 'btn-primary' : 'btn-info'"
+      (click)="verListaDePacientes()"
+    >
+      Por Paciente
+    </button>
+
+    <div class="contenedor-btn-especialidades" *ngIf="botonesEspecialidad">
+      <button
+        class="btn m-2 btn-warning"
+        style="text-transform: uppercase"
+        *ngFor="let esp of user.especialidad"
+        (click)="filtrarPorEspecialidadDelEspecialista(esp.nombre)"
+      >
+        {{ esp.nombre }}
+      </button>
+    </div>
+
+    <!-- LISTA GENERAL DE TURNOS -->
+    <div
+      class="tabla-usuario text-focus-in"
+      *ngIf="!filtroEspecialidad && !vistaListadoDeEspecialistas"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <!-- <th scope="col">Especialista</th> -->
+            <th scope="col">Especialidad</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Obra Social</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let turn of turnosDelEspecialista"
+          >
+            <td>{{ turn.fecha | dayDate }}</td>
+            <!-- <td>
+              {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+            </td> -->
+            <td>{{ turn.especialidad }}</td>
+            <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+            <td>{{ turn.paciente.obraSocial }}</td>
+            <td style="padding-top: 1rem; padding-bottom: 1rem">
+              <span class="estado">{{ turn.estado }}</span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                (click)="cancelarTurnoEspecialista(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado' &&
+                  botonCancelar
+                "
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-danger btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                (click)="rechazarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado' &&
+                  botonRechazar
+                "
+              >
+                Rechazar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacionRechazoEspecialista(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                  confirmacionRechazo
+                "
+              >
+                Confirmar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacion(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                  !confirmacionRechazo
+                "
+              >
+                Confirmar
+              </button>
+              <button
+                class="btn btn-success btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="aceptarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado' &&
+                  !cancelacionTurno
+                "
+              >
+                Aceptar
+              </button>
+              <button
+                class="btn btn-warning btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="finalizarTurno(turn)"
+                *ngIf="turn.estado == 'aceptado'"
+              >
+                Finalizar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarFinalizacion(turn)"
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de finalización"
+                [(ngModel)]="comentarioFinalizacion"
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <br
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                [placeholder]="
+                  botonCancelar
+                    ? 'Comentario de cancelación'
+                    : 'Comentario de rechazo'
+                "
+                [(ngModel)]="comentarioCancelacion"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="verComentario(turn)"
+                *ngIf="turn.comentarioPaciente"
+              >
+                Ver Reseña
+              </button>
+              <br
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                disabled=""
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="turn.comentarioPaciente"
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LISTA FILTRADA POR ESPECIALIDADES -->
+    <div
+      class="tabla-usuario text-focus-in"
+      *ngIf="filtroEspecialidad && !vistaListadoDeEspecialistas"
+    >
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Especialista</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Paciente</th>
+            <th scope="col">Obra Social</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let turn of listaPorEspecialidad"
+          >
+            <td>{{ turn.fecha | dayDate }}</td>
+            <td>
+              {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+            </td>
+            <td>{{ turn.especialidad }}</td>
+            <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+            <td>{{ turn.paciente.obraSocial }}</td>
+            <td style="padding-top: 1rem; padding-bottom: 1rem">
+              <span class="estado">{{ turn.estado }}</span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                (click)="cancelarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado' &&
+                  botonCancelar
+                "
+              >
+                Cancelar
+              </button>
+              <button
+                class="btn btn-danger btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                (click)="rechazarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado' &&
+                  botonRechazar
+                "
+              >
+                Rechazar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacionRechazoEspecialista(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                  confirmacionRechazo
+                "
+              >
+                Confirmar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarCancelacion(turn)"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                  !confirmacionRechazo
+                "
+              >
+                Confirmar
+              </button>
+              <button
+                class="btn btn-success btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="aceptarTurno(turn)"
+                *ngIf="
+                  turn.estado != 'aceptado' &&
+                  turn.estado != 'realizado' &&
+                  turn.estado != 'rechazado' &&
+                  turn.estado != 'cancelado'
+                "
+              >
+                Aceptar
+              </button>
+              <button
+                class="btn btn-warning btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="finalizarTurno(turn)"
+                *ngIf="turn.estado == 'aceptado'"
+              >
+                Finalizar
+              </button>
+              <button
+                class="btn btn-success btn-confirmar"
+                style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                (click)="confirmarFinalizacion(turn)"
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              >
+                Confirmar
+              </button>
+              <br
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de finalización"
+                [(ngModel)]="comentarioFinalizacion"
+                *ngIf="
+                  confirmacionFinalizacion &&
+                  turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <br
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                [placeholder]="
+                  botonCancelar
+                    ? 'Comentario de cancelación'
+                    : 'Comentario de rechazo'
+                "
+                [(ngModel)]="comentarioCancelacion"
+                *ngIf="
+                  cancelacionTurno &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <button
+                class="btn btn-secondary btn-cancelar"
+                style="box-shadow: 2px 2px 4px #000"
+                (click)="verComentario(turn)"
+                *ngIf="turn.comentarioPaciente"
+              >
+                Ver Reseña
+              </button>
+              <br
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+              <input
+                disabled=""
+                type="text"
+                class="form-control"
+                style="margin-top: 0.5rem"
+                placeholder="Comentario de cancelación..."
+                [(ngModel)]="turn.comentarioPaciente"
+                *ngIf="
+                  vistaComentario &&
+                  turnoACancelar.fecha.seconds == turn.fecha.seconds
+                "
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- LISTA DE PACIENTES -->
+    <div *ngIf="vistaListadoDeEspecialistas">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Apellido</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Obra Social</th>
+            <th scope="col">Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="tr-tabla"
+            style="cursor: pointer"
+            *ngFor="let paciente of pacientesDelEspecialista"
+          >
+            <td>{{ paciente.apellido }}</td>
+            <td>
+              {{ paciente.nombre }}
+            </td>
+            <td>{{ paciente.obraSocial }}</td>
+
+            <td>
+              <button
+                class="btn btn-secondary btn-especialista"
+                (click)="elegirPaciente(paciente)"
+              >
+                ELEGIR
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tabla-usuario text-focus-in">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Fecha</th>
+              <!-- <th scope="col">Especialista</th> -->
+              <th scope="col">Especialidad</th>
+              <th scope="col">Paciente</th>
+              <th scope="col">Obra Social</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              class="tr-tabla"
+              style="cursor: pointer"
+              *ngFor="let turn of listaPorEspecialista"
+            >
+              <td>{{ turn.fecha | dayDate }}</td>
+              <!-- <td>
+                {{ turn.especialista.apellido }} {{ turn.especialista.nombre }}
+              </td> -->
+              <td>{{ turn.especialidad }}</td>
+              <td>{{ turn.paciente.apellido }} {{ turn.paciente.nombre }}</td>
+              <td>{{ turn.paciente.obraSocial }}</td>
+              <td style="padding-top: 1rem; padding-bottom: 1rem">
+                <span class="estado">{{ turn.estado }}</span>
+              </td>
+
+              <td>
+                <button
+                  class="btn btn-secondary btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                  (click)="cancelarTurno(turn)"
+                  *ngIf="
+                    turn.estado != 'aceptado' &&
+                    turn.estado != 'realizado' &&
+                    turn.estado != 'rechazado' &&
+                    turn.estado != 'cancelado' &&
+                    botonCancelar
+                  "
+                >
+                  Cancelar
+                </button>
+                <button
+                  class="btn btn-danger btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000; margin-right: 1rem"
+                  (click)="rechazarTurno(turn)"
+                  *ngIf="
+                    turn.estado != 'aceptado' &&
+                    turn.estado != 'realizado' &&
+                    turn.estado != 'rechazado' &&
+                    turn.estado != 'cancelado' &&
+                    botonRechazar
+                  "
+                >
+                  Rechazar
+                </button>
+                <button
+                  class="btn btn-success btn-confirmar"
+                  style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                  (click)="confirmarCancelacionRechazoEspecialista(turn)"
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                    confirmacionRechazo
+                  "
+                >
+                  Confirmar
+                </button>
+                <button
+                  class="btn btn-success btn-confirmar"
+                  style="margin-right: 1rem; box-shadow: 2px 2px 4px #000"
+                  (click)="confirmarCancelacion(turn)"
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds &&
+                    !confirmacionRechazo
+                  "
+                >
+                  Confirmar
+                </button>
+                <button
+                  class="btn btn-success btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="aceptarTurno(turn)"
+                  *ngIf="
+                    turn.estado != 'aceptado' &&
+                    turn.estado != 'realizado' &&
+                    turn.estado != 'rechazado' &&
+                    turn.estado != 'cancelado'
+                  "
+                >
+                  Aceptar
+                </button>
+                <button
+                  class="btn btn-warning btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="finalizarTurno(turn)"
+                  *ngIf="turn.estado == 'aceptado'"
+                >
+                  Finalizar
+                </button>
+                <button
+                  class="btn btn-success btn-confirmar"
+                  style="margin-left: 1rem; box-shadow: 2px 2px 4px #000"
+                  (click)="confirmarFinalizacion(turn)"
+                  *ngIf="
+                    confirmacionFinalizacion &&
+                    turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                  "
+                >
+                  Confirmar
+                </button>
+                <br
+                  *ngIf="
+                    confirmacionFinalizacion &&
+                    turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  placeholder="Comentario de finalización"
+                  [(ngModel)]="comentarioFinalizacion"
+                  *ngIf="
+                    confirmacionFinalizacion &&
+                    turnoAFinalizar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <br
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <input
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  [placeholder]="
+                    botonCancelar
+                      ? 'Comentario de cancelación'
+                      : 'Comentario de rechazo'
+                  "
+                  [(ngModel)]="comentarioCancelacion"
+                  *ngIf="
+                    cancelacionTurno &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <button
+                  class="btn btn-secondary btn-cancelar"
+                  style="box-shadow: 2px 2px 4px #000"
+                  (click)="verComentario(turn)"
+                  *ngIf="turn.comentarioPaciente"
+                >
+                  Ver Reseña
+                </button>
+                <br
+                  *ngIf="
+                    vistaComentario &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+                <input
+                  disabled=""
+                  type="text"
+                  class="form-control"
+                  style="margin-top: 0.5rem"
+                  placeholder="Comentario de cancelación..."
+                  [(ngModel)]="turn.comentarioPaciente"
+                  *ngIf="
+                    vistaComentario &&
+                    turnoACancelar.fecha.seconds == turn.fecha.seconds
+                  "
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="turnos-container"></div>
+</div>

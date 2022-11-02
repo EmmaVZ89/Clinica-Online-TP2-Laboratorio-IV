@@ -15,6 +15,7 @@ export class FormAltaEspecialistaComponent implements OnInit {
   newEspecialista: User = new User();
   especialidad: boolean = false;
   spinner: boolean = false;
+  captcha: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -30,37 +31,50 @@ export class FormAltaEspecialistaComponent implements OnInit {
       especialidad: ['', [Validators.required]],
       email: ['', [Validators.required]],
       password: ['', [Validators.required]],
+      captcha: ['', [Validators.required]],
     });
+    this.captcha = this.generateRandomString(6);
   }
 
   ngOnInit(): void {}
 
   registerEspecialista() {
     if (this.formEspecialista.valid) {
-      if (this.newEspecialista.imagen1 != '') {
-        this.spinner = true;
-        this.newEspecialista.perfil = 'especialista';
-        this.newEspecialista.nombre =
-          this.formEspecialista.getRawValue().nombre;
-        this.newEspecialista.apellido =
-          this.formEspecialista.getRawValue().apellido;
-        this.newEspecialista.edad = this.formEspecialista.getRawValue().edad;
-        this.newEspecialista.dni = this.formEspecialista.getRawValue().dni;
-        this.newEspecialista.especialidad =
-          this.formEspecialista.getRawValue().especialidad;
-        this.newEspecialista.email = this.formEspecialista.getRawValue().email;
-        this.newEspecialista.password =
-          this.formEspecialista.getRawValue().password;
-        this.authService.registerNewUser(this.newEspecialista);
-        setTimeout(() => {
-          this.spinner = false;
-          this.formEspecialista.reset();
-          this.newEspecialista = new User();
-        }, 2000);
+      if (
+        this.captcha.toLocaleLowerCase().trim() ==
+        this.formEspecialista.getRawValue().captcha.toLocaleLowerCase().trim()
+      ) {
+        if (this.newEspecialista.imagen1 != '') {
+          this.spinner = true;
+          this.newEspecialista.perfil = 'especialista';
+          this.newEspecialista.nombre =
+            this.formEspecialista.getRawValue().nombre;
+          this.newEspecialista.apellido =
+            this.formEspecialista.getRawValue().apellido;
+          this.newEspecialista.edad = this.formEspecialista.getRawValue().edad;
+          this.newEspecialista.dni = this.formEspecialista.getRawValue().dni;
+          this.newEspecialista.especialidad =
+            this.formEspecialista.getRawValue().especialidad;
+          this.newEspecialista.email =
+            this.formEspecialista.getRawValue().email;
+          this.newEspecialista.password =
+            this.formEspecialista.getRawValue().password;
+          this.authService.registerNewUser(this.newEspecialista);
+          setTimeout(() => {
+            this.spinner = false;
+            this.formEspecialista.reset();
+            this.newEspecialista = new User();
+          }, 2000);
+        } else {
+          this.notificationService.showWarning(
+            'Debes elegir una imágen para tu perfil',
+            'Registro Especialista'
+          );
+        }
       } else {
         this.notificationService.showWarning(
-          'Debes elegir una imágen para tu perfil',
-          'Registro Especialista'
+          'El CAPTCHA no coincide',
+          'Registro Paciente'
         );
       }
     } else {
@@ -91,4 +105,17 @@ export class FormAltaEspecialistaComponent implements OnInit {
       this.especialidad = false;
     }
   } // end of addEspecialidad
+
+  generateRandomString(num: number) {
+    const characters =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result1 = ' ';
+    const charactersLength = characters.length;
+    for (let i = 0; i < num; i++) {
+      result1 += characters.charAt(
+        Math.floor(Math.random() * charactersLength)
+      );
+    }
+    return result1;
+  }
 }
