@@ -1,3 +1,4 @@
+<h2>Alumno: Emmanuel Zelarayán 4°A</h2>
 <h1 align="center">CLINICA ONLINE</h1>
 <p align="center">
    <img src="https://raw.githubusercontent.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/main/src/favicon.ico">
@@ -89,5 +90,25 @@ administración de la misma.
  <p align="center">
    <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/menu-alta-usuarios-admin.png">
  </p>
-  
-  
+ <h3 align="center">Cómo HABILITAR/DESHABILITAR un ESPECIALISTA cuando ingresamos como ADMINISTRADOR</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/habilitar-especialista.gif">
+ </p>
+ 
+ <h2>MIS TURNOS Y TURNOS</h2>
+ <h4 align="center">En la sección MIS TURNOS se podra ver los turnos asignados a un PACIENTE o los turnos  que tiene un ESPECIALISTA. Contiene filtros para poder filtrar los turnos por especialidades, especialista y paciente. Se podrán cancelar, rechazar, aceptar y finalizar un turno dependiendo con que tipo de usuario se ingrese</h4>
+  <h4 align="center">En la sección TURNOS, exclusiva de los ADMINITRADORES, se podra ver los turnos asignados a un PACIENTE. Contiene filtros para poder filtrar los turnos por especialidades y especialista. En esta sección se podrá cancelar los turnos que se deseen.</h4>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/mis-turnos-paciente.png">
+ </p>
+   <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/mis-turnos-especialista.png">
+ </p>
+ </p>
+   <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/turnos-admin.png">
+ </p>
+ <h3 align="center">Cómo acceder a MIS TURNOS y gestionarlos siendo un ESPECIALISTA</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/mis-turnos-especialista.gif">
+ </p>
