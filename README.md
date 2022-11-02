@@ -33,6 +33,8 @@ administración de la misma.
  <p align="center">
    <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/menu-registros.png">
  </p>
+ 
+ 
  <p>En este menu es posible darse de alta como PACIENTE o como ESPECIALISTA</p>
  <p align="left">
    <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/alta-paciente.png">
@@ -40,3 +42,52 @@ administración de la misma.
  <p align="left">
    <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/alta-especialista.png">
  </p>
+
+<h2>LOGIN</h2>
+ <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/login.png">
+ </p>
+ 
+ <h3 align="center">Cómo loguearse de manera rápida</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/inicio-rapido.gif">
+ </p>
+  
+  <h2>MI PERFIL - PACIENTE</h2>
+  <p align="center">En esta sección es posible ver todos los datos referidos a un PACIENTE</p>
+ <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/mi-perfil-usuario.png">
+ </p>
+  
+  <h2>MI PERFIL - ESPECIALISTA</h2>
+  <p align="center">En esta sección es posible ver todos los datos referidos a un ESPECIALISTA</p>
+ <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/mi-perfil-especialista.png">
+ </p>
+  <h3 align="center">Cómo generar turnos y cambiar los días asignados a cada especialidad</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/perfil-especialista.gif">
+ </p>
+  
+ <h2>SOLICITUD DE TURNOS - PACIENTE</h2>
+    <h3 align="center">Cómo solicitar turnos siendo un PACIENTE</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/solicitar-turno.gif">
+ </p>
+   
+  <h2>SOLICITUD DE TURNOS - ADMINISTRADOR</h2>
+ <h3 align="center">Cómo solicitar turnos para un PACIENTE siendo un ADMINISTRADOR</h3>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/solicitar-turno-admin.gif">
+ </p>
+   
+   <h2>GESTIÓN DE USUARIOS</h2>
+ <h4 align="center">En esta sección se pueden visualizar todos los usuarios (PACIENTES, ESPECIALISTAS y ADMINISTRADORES), se puede HABILITAR/DESHABILITAR a los ESPECIALISTAS que se hayan registrado. Tambien es posible dar de alta a nuevos usuarios, incluido ADMINISTRADORES.</h4>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/usuarios-admin.png">
+ </p>
+ <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/menu-alta-usuarios-admin.png">
+ </p>
+  
+  
