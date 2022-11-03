@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+//@ts-ignore
+import pdfMake from 'pdfmake/build/pdfMake';
+//@ts-ignore
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-mi-perfil',
@@ -27,6 +32,9 @@ export class MiPerfilComponent implements OnInit {
 
   currentTurnList: any = {};
 
+  historialClinico: any[] = [];
+  hayHistorial: boolean = false;
+
   constructor(
     public authService: AuthService,
     private notificationService: NotificationService
@@ -44,6 +52,19 @@ export class MiPerfilComponent implements OnInit {
           this.authService.isAdmin = true;
         } else if (this.user.perfil == 'paciente') {
           this.isPaciente = true;
+          this.authService.getHistorialesClinicos().subscribe((historial) => {
+            this.historialClinico = [];
+            historial.forEach((h) => {
+              if (h.paciente.id == this.user.id) {
+                this.historialClinico.push(h);
+              }
+            });
+            if (this.historialClinico.length > 0) {
+              this.hayHistorial = true;
+            } else {
+              this.hayHistorial = false;
+            }
+          });
         } else if (this.user.perfil == 'especialista') {
           this.isEspecialista = true;
           if (this.user.especialidad[0].diasTurnos) {
@@ -341,5 +362,24 @@ export class MiPerfilComponent implements OnInit {
       this.specialistDays = [...this.user.especialidad[1].diasTurnos];
       this.activateDayButton();
     }
+  }
+
+  verHistorialClinico() {}
+
+  crearPDF() {
+    // const contenidoPDF: any = {
+    //   content: [
+    //     {
+    //       image: 'data:image/jpeg;base64,assets/logo.png'
+    //     },
+    //     {
+    //       text: 'Hola Mundo',
+    //     },
+    //   ],
+    // };
+
+    // const pdf = pdfMake.createPdf(contenidoPDF);
+    // pdf.open();
+    // pdf.download();
   }
 }

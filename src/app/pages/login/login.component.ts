@@ -28,7 +28,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.spinner = true;
+    setTimeout(() => {
+      this.spinner = false;
+    }, 1500);
+  }
 
   loginUser() {
     if (this.formLogin.valid) {

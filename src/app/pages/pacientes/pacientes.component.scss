@@ -2,7 +2,7 @@
 
 /* BASIC */
 
-.perfil-container {
+.pacientes-container {
   font-family: "Poppins", sans-serif;
   background-image: url("../../../assets/fondo-bienvenida2.jpg");
   background-repeat: no-repeat;
@@ -15,7 +15,7 @@
 
 .perfil {
   position: absolute;
-  width: 70vw;
+  width: 90vw;
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -49,33 +49,6 @@
   }
 }
 
-.img-perfil {
-  width: 5rem;
-  height: 5rem;
-  object-fit: cover;
-  border-radius: 50%;
-  //   display: block;
-  //   margin-left: auto;
-  //   margin-right: auto;
-  border: 2px solid #000;
-  margin-bottom: 1rem;
-  margin-left: 0.5rem;
-  background: rgb(255, 119, 119);
-}
-
-.dias-contenedor {
-  button {
-    width: 6rem;
-    margin-top: 0.5rem;
-    margin-left: 0.5rem;
-    text-shadow: 1px 1px #000;
-  }
-  button:hover {
-    background: rgb(255, 119, 119);
-    transition: background 0.5s;
-  }
-}
-
 .carta-historial {
   h3 {
     color: #fff;
@@ -88,3 +61,31 @@
     font-weight: bolder;
   }
 }
+
+.carta-especialista {
+  height: 50vh;
+  border: 2px solid #fff;
+  background: rgb(255, 137, 137);
+  box-shadow: 2px 2px 4px #000;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  img {
+    margin-top: 2rem;
+    width: 10rem;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  p {
+    text-align: center;
+    color: #fff;
+    font-weight: bolder;
+    text-shadow: 1px 1px #000;
+    margin-top: 1rem;
+  }
+}
+// .carta-especialista:hover {
+//   background: rgb(250, 52, 52);
+//   transition: background 0.5s;
+//   cursor: pointer;
+// }

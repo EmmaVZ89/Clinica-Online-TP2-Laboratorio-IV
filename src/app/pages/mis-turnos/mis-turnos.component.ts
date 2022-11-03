@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-mis-turnos',
@@ -8,6 +9,7 @@ import { NotificationService } from 'src/app/services/notification.service';
   styleUrls: ['./mis-turnos.component.scss'],
 })
 export class MisTurnosComponent implements OnInit {
+  formHistorial: FormGroup;
   user: any = null;
   isPaciente: boolean = false;
   isEspecialista: boolean = false;
@@ -47,10 +49,29 @@ export class MisTurnosComponent implements OnInit {
   comentarioFinalizacion: string = '';
   turnoAFinalizar: any = {};
 
+  turnoFinalizado: any = {};
+
+  cantidadClaveValor: number = 0;
+  arrayClaveValorAdicionales: any[] = [];
+  dato1: string[] = ['clave 1', 'valor 1'];
+  dato2: string[] = ['clave 2', 'valor 2'];
+  dato3: string[] = ['clave 3', 'valor 3'];
+
+  palabraBusqueda: string = '';
+  turnosFiltrados: any[] = [];
+
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService
-  ) {}
+    private notificationService: NotificationService,
+    private formBuilder: FormBuilder
+  ) {
+    this.formHistorial = this.formBuilder.group({
+      altura: ['', [Validators.required]],
+      peso: ['', [Validators.required]],
+      temperatura: ['', [Validators.required]],
+      presion: ['', [Validators.required]],
+    });
+  }
 
   ngOnInit(): void {
     this.spinner = true;
@@ -70,6 +91,7 @@ export class MisTurnosComponent implements OnInit {
         this.authService.getTurnList().subscribe((turns: any) => {
           this.currentSpecialistTurnList = turns;
           this.turnList = [];
+          this.turnosFiltrados = [];
           this.turnosDelPaciente = [];
           this.turnosDelEspecialista = [];
           this.pacientesDelEspecialista = [];
@@ -99,6 +121,12 @@ export class MisTurnosComponent implements OnInit {
             if (index == -1) {
               this.pacientesDelEspecialista.push(paciente);
             }
+          }
+
+          if (this.isPaciente) {
+            this.turnosFiltrados = [...this.turnosDelPaciente];
+          } else if (this.isEspecialista) {
+            this.turnosFiltrados = [...this.turnosDelEspecialista];
           }
           // console.log(this.pacientesDelEspecialista);
           // console.log(this.turnosDelEspecialista);
@@ -411,11 +439,11 @@ export class MisTurnosComponent implements OnInit {
     this.turnoAFinalizar = { ...turno };
     this.confirmacionFinalizacion = true;
     this.vistaComentario = false;
-    this.vistaComentarioCalificacion = false;    
+    this.vistaComentarioCalificacion = false;
   }
 
-  confirmarFinalizacion(turno:any){
-    turno.estado = "realizado"
+  confirmarFinalizacion(turno: any) {
+    turno.estado = 'realizado';
     turno.comentario = this.comentarioFinalizacion;
     for (let i = 0; i < this.currentSpecialistTurnList.length; i++) {
       const turnosEspecialista = this.currentSpecialistTurnList[i];
@@ -439,5 +467,190 @@ export class MisTurnosComponent implements OnInit {
       this.confirmacionFinalizacion = false;
       this.notificationService.showSuccess('Turno Finalizado', 'Turnos');
     }, 1000);
+  }
+
+  abrirFormHistorialClinico(turno: any) {
+    this.turnoFinalizado = { ...turno };
+  }
+
+  agregarClaveValor() {
+    if (this.cantidadClaveValor < 3) {
+      this.cantidadClaveValor++;
+      if (this.cantidadClaveValor == 1) {
+        this.arrayClaveValorAdicionales.push(this.dato1);
+      } else if (this.cantidadClaveValor == 2) {
+        this.arrayClaveValorAdicionales.push(this.dato2);
+      } else {
+        this.arrayClaveValorAdicionales.push(this.dato3);
+      }
+    }
+  }
+
+  crearHistorialClinico() {
+    if (this.formHistorial.valid) {
+      let detalle: any = {
+        altura: this.formHistorial.getRawValue().altura,
+        peso: this.formHistorial.getRawValue().peso,
+        temperatura: this.formHistorial.getRawValue().temperatura,
+        presion: this.formHistorial.getRawValue().presion,
+      };
+
+      let detalleAdicional: any = {};
+      if (this.arrayClaveValorAdicionales.length == 1) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+      }
+      if (this.arrayClaveValorAdicionales.length == 2) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+        detalleAdicional.clave2 = this.dato2[0];
+        detalleAdicional.valor2 = this.dato2[1];
+      }
+      if (this.arrayClaveValorAdicionales.length == 3) {
+        detalleAdicional.clave1 = this.dato1[0];
+        detalleAdicional.valor1 = this.dato1[1];
+        detalleAdicional.clave2 = this.dato2[0];
+        detalleAdicional.valor2 = this.dato2[1];
+        detalleAdicional.clave3 = this.dato3[0];
+        detalleAdicional.valor3 = this.dato3[1];
+      }
+
+      this.turnoFinalizado.detalle = detalle;
+      this.turnoFinalizado.detalleAdicional = detalleAdicional;
+      this.spinner = true;
+      this.modificarTurnoFinalizado(this.turnoFinalizado);
+      this.authService
+        .createHistorialClinico(this.turnoFinalizado)
+        .then(() => {
+          this.spinner = false;
+          this.dato1 = ['clave 1', 'valor 1'];
+          this.dato2 = ['clave 2', 'valor 2'];
+          this.dato3 = ['clave 3', 'valor 3'];
+          this.arrayClaveValorAdicionales = [];
+          this.cantidadClaveValor = 0;
+          this.formHistorial.reset();
+          this.notificationService.showSuccess(
+            'Historial clínico creado',
+            'Mis Turnos'
+          );
+        })
+        .catch(() => {
+          this.spinner = false;
+        });
+    }
+  }
+
+  modificarTurnoFinalizado(turno: any) {
+    turno.historial = true;
+    for (let i = 0; i < this.currentSpecialistTurnList.length; i++) {
+      const turnosEspecialista = this.currentSpecialistTurnList[i];
+      const index = turnosEspecialista.turnos.findIndex((t: any) => {
+        return (
+          new Date(t.fecha.seconds * 1000).getTime() ==
+            new Date(turno.fecha.seconds * 1000).getTime() &&
+          t.especialidad == turno.especialidad
+        );
+      });
+      turnosEspecialista.turnos[index] = turno;
+      this.authService.updateTurnList(turnosEspecialista);
+    }
+  }
+
+  filtrarPorCamposPaciente() {
+    this.turnosFiltrados = [];
+    if (this.palabraBusqueda == '') {
+      this.turnosFiltrados = [...this.turnosDelPaciente];
+    } else {
+      const busqueda = this.palabraBusqueda.trim().toLocaleLowerCase();
+      for (let i = 0; i < this.turnosDelPaciente.length; i++) {
+        const turno = this.turnosDelPaciente[i];
+        const fechaBusqueda = this.transformarFechaParaBusqueda(turno.fecha);
+        if (
+          turno.especialista.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialista.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialidad.toLocaleLowerCase().includes(busqueda) ||
+          turno.estado.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.obraSocial.toLocaleLowerCase().includes(busqueda) ||
+          fechaBusqueda.includes(busqueda) ||
+          turno?.detalle?.altura?.toString().includes(busqueda) ||
+          turno?.detalle?.peso?.toString().includes(busqueda) ||
+          turno?.detalle?.temperatura?.toString().includes(busqueda) ||
+          turno?.detalle?.presion?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave1?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave2?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave3?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor1?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor2?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor3?.includes(busqueda)
+        ) {
+          this.turnosFiltrados.push(turno);
+        }
+      }
+    }
+  }
+
+  filtrarPorCamposEspecialista() {
+    this.turnosFiltrados = [];
+    if (this.palabraBusqueda == '') {
+      this.turnosFiltrados = [...this.turnosDelEspecialista];
+    } else {
+      const busqueda = this.palabraBusqueda.trim().toLocaleLowerCase();
+      for (let i = 0; i < this.turnosDelEspecialista.length; i++) {
+        const turno = this.turnosDelEspecialista[i];
+        const fechaBusqueda = this.transformarFechaParaBusqueda(turno.fecha);
+        if (
+          turno.especialista.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialista.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialidad.toLocaleLowerCase().includes(busqueda) ||
+          turno.estado.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.obraSocial.toLocaleLowerCase().includes(busqueda) ||
+          fechaBusqueda.includes(busqueda) ||
+          turno?.detalle?.altura?.toString().includes(busqueda) ||
+          turno?.detalle?.peso?.toString().includes(busqueda) ||
+          turno?.detalle?.temperatura?.toString().includes(busqueda) ||
+          turno?.detalle?.presion?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave1?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave2?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave3?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor1?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor2?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor3?.includes(busqueda)
+        ) {
+          this.turnosFiltrados.push(turno);
+        }
+      }
+    }
+  }
+
+  transformarFechaParaBusqueda(value: any) {
+    if (value.seconds) {
+      value = new Date(value.seconds * 1000);
+    }
+    let rtn =
+      value.getFullYear() +
+      '-' +
+      (value.getMonth() + 1) +
+      '-' +
+      value.getDate();
+    if (parseInt(rtn.split('-')[2]) < 10 && parseInt(rtn.split('-')[2]) > 0) {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-0' +
+        value.getDate();
+    } else {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-' +
+        value.getDate();
+    }
+    return rtn;
   }
 }

@@ -12,7 +12,12 @@ export class RegisterComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.spinner = true;
+    setTimeout(() => {
+      this.spinner = false;
+    }, 1500);
+  }
 
   goToFormPaciente() {
     this.formPaciente = true;

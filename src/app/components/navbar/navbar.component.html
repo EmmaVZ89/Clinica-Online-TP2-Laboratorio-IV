@@ -57,6 +57,16 @@
           <a
             class="nav-link active"
             aria-current="page"
+            routerLink="/pacientes"
+            *ngIf="this.isEspecialista"
+          >
+            <button class="btn-nav">PACIENTES</button>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
             routerLink="/usuarios-admin"
             *ngIf="this.authService.isAdmin"
           >

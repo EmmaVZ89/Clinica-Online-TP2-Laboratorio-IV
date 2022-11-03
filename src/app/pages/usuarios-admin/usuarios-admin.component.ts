@@ -16,6 +16,10 @@ export class UsuariosAdminComponent implements OnInit {
   formAdministrador: boolean = false;
   spinner: boolean = false;
 
+  historialClinico: any[] = [];
+  historialActivo: any[] = [];
+  hayHistorial: boolean = false;
+
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService
@@ -28,6 +32,18 @@ export class UsuariosAdminComponent implements OnInit {
       if (users) {
         this.usersList = users;
       }
+      this.authService.getHistorialesClinicos().subscribe((historial) => {
+        this.historialClinico = historial;
+        historial.forEach((h) => {
+          for (let i = 0; i < this.usersList.length; i++) {
+            const usuario = this.usersList[i];
+            if (usuario.perfil == 'paciente' && usuario.id == h.paciente.id) {
+              this.usersList[i].historial = true;
+              // console.log(this.usersList[i]);
+            }
+          }
+        });
+      });
     });
   }
 
@@ -78,5 +94,15 @@ export class UsuariosAdminComponent implements OnInit {
     this.formPaciente = false;
     this.formEspecialista = false;
     this.formAdministrador = false;
+  }
+
+  verHistorialPaciente(paciente: any) {
+    this.historialActivo = [];
+    for (let i = 0; i < this.historialClinico.length; i++) {
+      const historial = this.historialClinico[i];
+      if (historial.paciente.id == paciente.id) {
+        this.historialActivo.push(historial);
+      }
+    }
   }
 }

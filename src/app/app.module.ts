@@ -32,6 +32,7 @@ import { DatePipe } from './pipes/date.pipe';
 import { DayDatePipe } from './pipes/day-date.pipe';
 import { TurnosComponent } from './pages/turnos/turnos.component';
 import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
+import { PacientesComponent } from './pages/pacientes/pacientes.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
     DatePipe,
     DayDatePipe,
     TurnosComponent,
-    MisTurnosComponent
+    MisTurnosComponent,
+    PacientesComponent
   ],
   imports: [
     BrowserModule,

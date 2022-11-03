@@ -9,10 +9,14 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class BienvenidaComponent implements OnInit {
   user: any = null;
-
+  spinner: boolean = false;
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
+    this.spinner = true;
+    setTimeout(() => {
+      this.spinner = false;
+    }, 1500);
     this.authService.user$.subscribe((user: any) => {
       if (user) {
         this.user = user;

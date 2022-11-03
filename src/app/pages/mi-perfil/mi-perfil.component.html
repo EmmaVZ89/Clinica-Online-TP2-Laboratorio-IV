@@ -41,6 +41,18 @@
         <p>{{ user.obraSocial }}</p>
         <label>Tipo de Usuario</label>
         <p>{{ user.perfil }}</p>
+        <label>Historial Clínico</label>
+        <br />
+        <button
+          *ngIf="hayHistorial"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          class="btn btn-info"
+          (click)="verHistorialClinico()"
+        >
+          Ver Historial Clínico
+        </button>
+        <p *ngIf="!hayHistorial">No hay historial cliníco disponible</p>
       </div>
     </div>
 
@@ -75,12 +87,8 @@
           *ngIf="user.especialidad[1]"
           class="btn btn-secondary"
           [ngClass]="especialidad2 ? 'btn-info' : ''"
-          style="
-            text-transform: uppercase;
-            width: 9rem;
-            margin-top: 0.5rem;
-          "
-           (click)="showTurnsTwo()"
+          style="text-transform: uppercase; width: 9rem; margin-top: 0.5rem"
+          (click)="showTurnsTwo()"
         >
           {{ user.especialidad[1].nombre }}
         </button>
@@ -153,4 +161,81 @@
     </div>
   </div>
   <div class="perfil-container"></div>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          HISTORIAL CLÍNICO
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="
+            margin-bottom: 1rem;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+          "
+          (click)="crearPDF()"
+        >
+          Descargar PDF
+        </button>
+        <div *ngFor="let historial of historialClinico" class="carta-historial">
+          <h3>{{ historial.fecha | dayDate }}</h3>
+          <hr />
+          <p>
+            <span>Paciente: </span>{{ historial.paciente.apellido }},
+            {{ historial.paciente.nombre }}
+          </p>
+          <p><span>Especialidad: </span>{{ historial.especialidad }}</p>
+          <p>
+            <span>Especialista: </span>{{ historial.especialista.apellido }},
+            {{ historial.especialista.nombre }}
+          </p>
+          <p><span>Detalle: </span></p>
+          <p>Altura: {{ historial.detalle.altura }}</p>
+          <p>Peso: {{ historial.detalle.peso }}</p>
+          <p>Temperatura: {{ historial.detalle.temperatura }}</p>
+          <p>Presión: {{ historial.detalle.presion }}</p>
+          <p><span>Detalles adicionales: </span></p>
+          <p *ngIf="historial.detalleAdicional?.clave1">
+            {{ historial.detalleAdicional?.clave1 }}:
+            {{ historial.detalleAdicional?.valor1 }}
+          </p>
+          <p *ngIf="historial.detalleAdicional?.clave2">
+            {{ historial.detalleAdicional?.clave2 }}:
+            {{ historial.detalleAdicional?.valor2 }}
+          </p>
+          <p *ngIf="historial.detalleAdicional?.clave3">
+            {{ historial.detalleAdicional?.clave3 }}:
+            {{ historial.detalleAdicional?.valor3 }}
+          </p>
+          <hr />
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
 </div>
