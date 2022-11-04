@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
-//@ts-ignore
-import pdfMake from 'pdfmake/build/pdfMake';
-//@ts-ignore
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+// //@ts-ignore
+// import pdfMake from 'pdfmake/build/pdfMake';
+// //@ts-ignore
+// import pdfFonts from 'pdfmake/build/vfs_fonts';
+// pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-mi-perfil',
@@ -33,7 +36,15 @@ export class MiPerfilComponent implements OnInit {
   currentTurnList: any = {};
 
   historialClinico: any[] = [];
+  historialClinicoFiltrado: any[] = [];
   hayHistorial: boolean = false;
+  hayHistorialFiltrado: boolean = true;
+  btnTodo: boolean = true;
+  btnClinico: boolean = false;
+  btnOdontologo: boolean = false;
+  btnOftalmologo: boolean = false;
+
+  fechaActual: Date = new Date();
 
   constructor(
     public authService: AuthService,
@@ -364,22 +375,89 @@ export class MiPerfilComponent implements OnInit {
     }
   }
 
-  verHistorialClinico() {}
+  verHistorialClinico() {
+    this.historialClinicoFiltrado = [...this.historialClinico];
+    console.log(this.historialClinicoFiltrado);
+  }
+
+  filtrarHistorialClinico(especialidad: string) {
+    switch (especialidad) {
+      case 'todo':
+        this.btnTodo = true;
+        this.btnClinico = false;
+        this.btnOdontologo = false;
+        this.btnOftalmologo = false;
+        break;
+      case 'clinico':
+        this.btnTodo = false;
+        this.btnClinico = true;
+        this.btnOdontologo = false;
+        this.btnOftalmologo = false;
+        break;
+      case 'odontologo':
+        this.btnTodo = false;
+        this.btnClinico = false;
+        this.btnOdontologo = true;
+        this.btnOftalmologo = false;
+        break;
+      case 'oftalmologo':
+        this.btnTodo = false;
+        this.btnClinico = false;
+        this.btnOdontologo = false;
+        this.btnOftalmologo = true;
+        break;
+    }
+
+    this.historialClinicoFiltrado = [];
+    if (especialidad == 'todo') {
+      this.historialClinicoFiltrado = [...this.historialClinico];
+    } else {
+      for (let i = 0; i < this.historialClinico.length; i++) {
+        const historial = this.historialClinico[i];
+        if (historial.especialidad == especialidad) {
+          this.historialClinicoFiltrado.push(historial);
+        }
+      }
+    }
+
+    if (this.historialClinicoFiltrado.length == 0) {
+      this.hayHistorialFiltrado = false;
+    } else {
+      this.hayHistorialFiltrado = true;
+    }
+  }
 
   crearPDF() {
-    // const contenidoPDF: any = {
-    //   content: [
-    //     {
-    //       image: 'data:image/jpeg;base64,assets/logo.png'
-    //     },
-    //     {
-    //       text: 'Hola Mundo',
-    //     },
-    //   ],
-    // };
+    const DATA = document.getElementById('pdf');
+    const doc = new jsPDF('p', 'pt', 'a4');
+    const options = {
+      background: 'white',
+      scale: 2,
+    };
+    //@ts-ignore
+    html2canvas(DATA, options)
+      .then((canvas) => {
+        const img = canvas.toDataURL('image/PNG');
 
-    // const pdf = pdfMake.createPdf(contenidoPDF);
-    // pdf.open();
-    // pdf.download();
+        const bufferX = 30;
+        const bufferY = 30;
+        const imgProps = (doc as any).getImageProperties(img);
+        const pdfWidth = doc.internal.pageSize.getWidth() - 2 * bufferX;
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        doc.addImage(
+          img,
+          'PNG',
+          bufferX,
+          bufferY,
+          pdfWidth,
+          pdfHeight,
+          undefined,
+          'FAST'
+        );
+        return doc;
+      })
+      .then((docResult) => {
+        docResult.save(`historial_clinico.pdf`);
+      });
   }
 }

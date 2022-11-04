@@ -16,6 +16,7 @@ export class PacientesComponent implements OnInit {
 
   historialClinico: any[] = [];
   historialActivo: any[] = [];
+  historialClinicoDelEspecialista: any[] = [];
   hayPacientesAtendidos: boolean = false;
 
   constructor(
@@ -38,6 +39,7 @@ export class PacientesComponent implements OnInit {
         this.authService.getHistorialesClinicos().subscribe((historial) => {
           this.historialClinico = historial;
           this.pacientesAtendidos = [];
+          this.historialClinicoDelEspecialista = [];
           historial.forEach((h) => {
             for (let i = 0; i < this.usersList.length; i++) {
               const usuario = this.usersList[i];
@@ -47,11 +49,37 @@ export class PacientesComponent implements OnInit {
                 this.user.id == h.especialista.id
               ) {
                 this.usersList[i].historial = true;
+                this.pacientesAtendidos = this.pacientesAtendidos.filter(
+                  (p) => {
+                    return p.id != usuario.id;
+                  }
+                );
                 this.pacientesAtendidos.push(usuario);
                 // console.log(this.usersList[i]);
               }
             }
           });
+
+          this.historialClinicoDelEspecialista = this.historialClinico.filter(
+            (h) => {
+              return h.especialista.id == user.id;
+            }
+          );
+
+          this.historialClinicoDelEspecialista.forEach((h) => {
+            h.paciente.contadorHistorial = 0;
+          });
+          for (let i = 0; i < this.pacientesAtendidos.length; i++) {
+            const paciente = this.pacientesAtendidos[i];
+            paciente.contador = 0;
+            this.historialClinicoDelEspecialista.forEach((h) => {
+              if (paciente.id == h.paciente.id) {
+                paciente.contador++;
+                h.paciente.contador = paciente.contador;
+              }
+            });
+          }
+
           if (this.pacientesAtendidos.length == 0) {
             this.hayPacientesAtendidos = false;
           } else {

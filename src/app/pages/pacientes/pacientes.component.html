@@ -14,23 +14,42 @@
   <div class="perfil">
     <h3>Pacientes Atendidos</h3>
     <div *ngIf="hayPacientesAtendidos">
-      <div class="row" style="overflow-x: scroll">
+      <div class="row contenedor-cartas">
         <div
-          class="col carta-especialista"
+          class="col col-2 carta-especialista"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
           *ngFor="let pac of pacientesAtendidos"
         >
           <div (click)="verHistorialPaciente(pac)">
             <img src="{{ pac.imagen1 }}" alt="imagen" />
             <p>{{ pac.nombre }} - {{ pac.apellido }}</p>
-            <button
-              *ngIf="pac.historial"
-              class="btn btn-info"
-              data-bs-toggle="modal"
-              data-bs-target="#exampleModal"
-              style="display: block; margin-left: auto; margin-right: auto"
+            <div
+              style="
+                text-align: center;
+                color: #fff;
+                font-size: 1rem;
+                font-weight: bold;
+                text-shadow: 1px 1px #000;
+              "
             >
-              Ver Historial Clínico
-            </button>
+              <small>Historial</small>
+            </div>
+            <div *ngFor="let historial of historialClinicoDelEspecialista">
+              <div
+                *ngIf="
+                  pac.id == historial.paciente.id &&
+                  user.id == historial.especialista.id
+                "
+                class="detalle-atencion"
+              >
+                <small *ngIf="historial.paciente.contador <= 3">
+                  <span>Fecha:</span>
+                  {{ historial.fecha | dayDate }} <span>Especialidad:</span>
+                  {{ historial.especialidad }}
+                </small>
+              </div>
+            </div>
           </div>
         </div>
       </div>

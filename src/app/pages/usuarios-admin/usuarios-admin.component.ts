@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import * as FileSaver from 'file-saver';
+import { saveAs } from 'file-saver';
+import * as XLSX from 'xlsx';
+// import * as XLSX from 'xlsx/xlsx.mjs';
+const EXCEL_TYPE =
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+const EXCEL_EXTENSION = '.xlsx';
 
 @Component({
   selector: 'app-usuarios-admin',
@@ -19,6 +26,8 @@ export class UsuariosAdminComponent implements OnInit {
   historialClinico: any[] = [];
   historialActivo: any[] = [];
   hayHistorial: boolean = false;
+
+  listaTurnos: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -43,6 +52,17 @@ export class UsuariosAdminComponent implements OnInit {
             }
           }
         });
+      });
+      this.authService.getTurnList().subscribe((turnos: any) => {
+        this.listaTurnos = [];
+        for (let i = 0; i < turnos.length; i++) {
+          const turnoEspecialista = turnos[i].turnos;
+          for (let j = 0; j < turnoEspecialista.length; j++) {
+            const t = turnoEspecialista[j];
+            this.listaTurnos.push(t);
+          }
+        }
+        // console.log(this.listaTurnos);
       });
     });
   }
@@ -103,6 +123,70 @@ export class UsuariosAdminComponent implements OnInit {
       if (historial.paciente.id == paciente.id) {
         this.historialActivo.push(historial);
       }
+    }
+  }
+
+  exportAsExcelFile(json: any[], excelFileName: string): void {
+    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(json);
+    const workbook: XLSX.WorkBook = {
+      Sheets: { data: worksheet },
+      SheetNames: ['data'],
+    };
+    const excelBuffer: any = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    });
+    this.saveAsExcelFile(excelBuffer, excelFileName);
+  }
+
+  saveAsExcelFile(buffer: any, fileName: string): void {
+    const data: Blob = new Blob([buffer], { type: EXCEL_TYPE });
+    FileSaver.saveAs(
+      data,
+      fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION
+    );
+  }
+
+  descargarExcel() {
+    this.exportAsExcelFile(this.usersList, 'listadoUsuarios');
+    this.notificationService.showSuccess(
+      'Listado de Usuarios descargado',
+      'Usuarios'
+    );
+  }
+
+  verTurnosUsuario(usuario: any) {
+    const listaTurnosUsuario: any[] = [];
+    if (usuario.perfil == 'paciente') {
+      this.listaTurnos.forEach((t: any) => {
+        if (usuario.id == t?.paciente?.id) {
+          const turno: any = {};
+          turno.nombrePaciente = usuario.nombre;
+          turno.apellidoPaciente = usuario.apellido;
+          turno.fecha = new Date(t.fecha.seconds * 1000);
+          turno.especialidad = t.especialidad;
+          turno.nombreEspecialista = t.especialista.nombre;
+          turno.apellidoEspecialista = t.especialista.apellido;
+          listaTurnosUsuario.push(turno);
+        }
+      });
+      if (listaTurnosUsuario.length == 0) {
+        this.notificationService.showWarning(
+          'El PACIENTE no tiene turnos',
+          'Usuarios'
+        );
+      } else {
+        this.exportAsExcelFile(listaTurnosUsuario, 'turnosPaciente');
+        this.notificationService.showSuccess(
+          'Turnos del PACIENTE descargado',
+          'Usuarios'
+        );
+      }
+    } else {
+      this.notificationService.showWarning(
+        'Debes elegir un PACIENTE',
+        'Usuarios'
+      );
     }
   }
 }
