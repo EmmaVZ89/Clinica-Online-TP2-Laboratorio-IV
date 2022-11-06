@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  userLog: any = null;
   formLogin: FormGroup;
   userLogin: User = new User();
   spinner: boolean = false;
@@ -42,7 +43,10 @@ export class LoginComponent implements OnInit {
       this.userLogin.password = this.formLogin.getRawValue().password;
       this.authService
         .userLogin(this.userLogin.email, this.userLogin.password)
-        .then((data) => {
+        .then(async (data: any) => {
+          setTimeout(() => {
+            this.authService.createUserLog(this.userLog);
+          }, 3000);
           this.authService.user$.subscribe((user: any) => {
             if (user) {
               if (user.test) {
@@ -55,10 +59,12 @@ export class LoginComponent implements OnInit {
                   this.authService.userLogout();
                 } else {
                   this.authService.isLogged = true;
-                  this.notificationService.showSuccess(
-                    'Inicio exitoso, redirigiendo...',
-                    'Inicio de Sesión'
-                  );
+                  // this.notificationService.showSuccess(
+                  //   'Inicio exitoso, redirigiendo...',
+                  //   'Inicio de Sesión'
+                  // );
+                  // this.authService.createUserLog(user);
+                  this.userLog = user;
                   this.spinner = false;
                   this.router.navigate(['']);
                 }
@@ -81,10 +87,12 @@ export class LoginComponent implements OnInit {
                     this.authService.userLogout();
                   } else {
                     this.authService.isLogged = true;
-                    this.notificationService.showSuccess(
-                      'Inicio exitoso, redirigiendo...',
-                      'Inicio de Sesión'
-                    );
+                    // this.notificationService.showSuccess(
+                    //   'Inicio exitoso, redirigiendo...',
+                    //   'Inicio de Sesión'
+                    // );
+                    // this.authService.createUserLog(user);
+                    this.userLog = user;
                     this.spinner = false;
                     this.router.navigate(['']);
                   }

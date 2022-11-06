@@ -73,6 +73,16 @@
             <button class="btn-nav">USUARIOS</button>
           </a>
         </li>
+        <li class="nav-item">
+          <a
+            class="nav-link active"
+            aria-current="page"
+            routerLink="/informes"
+            *ngIf="this.authService.isAdmin"
+          >
+            <button class="btn-nav">INFORMES</button>
+          </a>
+        </li>
       </ul>
 
       <span *ngIf="authService.isLogged" class="userInfo">

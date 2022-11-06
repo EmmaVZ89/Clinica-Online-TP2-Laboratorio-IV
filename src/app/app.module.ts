@@ -33,6 +33,8 @@ import { DayDatePipe } from './pipes/day-date.pipe';
 import { TurnosComponent } from './pages/turnos/turnos.component';
 import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 import { PacientesComponent } from './pages/pacientes/pacientes.component';
+import { InformesComponent } from './pages/informes/informes.component';
+import { DayWithHourPipe } from './pipes/day-with-hour.pipe';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,9 @@ import { PacientesComponent } from './pages/pacientes/pacientes.component';
     DayDatePipe,
     TurnosComponent,
     MisTurnosComponent,
-    PacientesComponent
+    PacientesComponent,
+    InformesComponent,
+    DayWithHourPipe
   ],
   imports: [
     BrowserModule,

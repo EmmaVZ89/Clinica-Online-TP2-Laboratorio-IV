@@ -113,9 +113,23 @@ export class AuthService {
     this.angularFireAuth.signOut();
   } // end of logout
 
-  createUserLog(collectionName: string, log: any) {
-    return this.angularFirestore.collection(collectionName).add(log);
+  createUserLog(user: any) {
+    const log: any = {};
+    log.fecha = new Date();
+    log.id = user.id;
+    log.perfil = user.perfil;
+    log.nombre = user.nombre;
+    log.apellido = user.apellido;
+    return this.angularFirestore.collection('logUsuarios').add(log);
   } // end of createUserLog
+
+  getUsersLog() {
+    const collection = this.angularFirestore.collection<any>(
+      'logUsuarios',
+      (ref) => ref.orderBy('fecha', 'desc')
+    );
+    return collection.valueChanges();
+  }
 
   createTurnList(turn: any) {
     this.angularFirestore
@@ -154,7 +168,9 @@ export class AuthService {
   }
 
   getHistorialesClinicos() {
-    const collection = this.angularFirestore.collection<any>('historialesClinicos');
+    const collection = this.angularFirestore.collection<any>(
+      'historialesClinicos'
+    );
     return collection.valueChanges();
   }
 

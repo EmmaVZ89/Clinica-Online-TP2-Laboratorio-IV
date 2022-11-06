@@ -1,0 +1,237 @@
+<app-navbar></app-navbar>
+
+<div class="contenedor-spinner" *ngIf="spinner">
+  <div class="wrapper">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+    <div class="shadow"></div>
+  </div>
+</div>
+
+<div class="contenedor-estadisticas">
+  <div>
+    <h3>ESTADÍSTICAS</h3>
+    <div class="row">
+      <div
+        class="col carta-especialista"
+        data-bs-toggle="modal"
+        data-bs-target="#modalLogUsuarios"
+      >
+        <img src="../../../assets/logs.png" alt="imagen" />
+        <p>Log de usuarios</p>
+        <small>Detalle de los inicio de sesión de todos los usuarios</small>
+      </div>
+      <div
+        class="col carta-especialista"
+        data-bs-toggle="modal"
+        data-bs-target="#modalTurnosPorEspecialidad"
+      >
+        <img src="../../../assets/bar-chart.png" alt="imagen" />
+        <p>por especialidad</p>
+        <small>Cantidad de turnos solicitados por especialidad</small>
+      </div>
+      <div class="col carta-especialista">
+        <img src="../../../assets/pie-chart.png" alt="imagen" />
+        <p>Turnos por día</p>
+        <small>Cantidad de turnos solicitados por día</small>
+      </div>
+      <div class="col carta-especialista">
+        <img src="../../../assets/donut-chart.png" alt="imagen" />
+        <p>Turnos solicitados</p>
+        <small
+          >Cantidad de turnos solicitados por un médico en un lapso de
+          tiempo</small
+        >
+      </div>
+      <div class="col carta-especialista">
+        <img src="../../../assets/informe.png" alt="imagen" />
+        <p>Turnos finalizados</p>
+        <small
+          >Cantidad de turnos finalizados por un médico en un lapso de
+          tiempo</small
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="informes-container"></div>
+
+<!-- MODAL DE LOG DE USUARIOS -->
+<div
+  class="modal fade modal-xl"
+  id="modalLogUsuarios"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="margin-right: 1rem; margin-bottom: 1rem"
+          (click)="descargarPDFLogs()"
+        >
+          Descargar PDF
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          style="margin-bottom: 1rem"
+          (click)="descargarExcelLogs()"
+        >
+          Descargar EXCEL
+        </button>
+        <div id="pdflogs">
+          <div
+            style="display: flex; align-content: center; margin-bottom: 2rem"
+          >
+            <img
+              src="../../../assets/logo.png"
+              style="width: 100px"
+              alt="logo"
+            />
+            <h2
+              style="
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: bolder;
+                padding-top: 2rem;
+                margin-left: 2rem;
+              "
+              id="exampleModalLabel"
+            >
+              CLÍNICA ONLINE
+            </h2>
+          </div>
+          <h1 style="text-align: center; font-size: 1.5rem">
+            LOGS DE USUARIOS
+          </h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">FECHA</th>
+                <!-- <th scope="col">ID</th> -->
+                <th scope="col">PERFIL</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">APELLIDO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="tr-tabla" *ngFor="let log of listaLogs">
+                <td>
+                  {{ log.fecha | dayWithHour }}
+                </td>
+                <!-- <td>{{ log.id }}</td> -->
+                <td>{{ log.perfil }}</td>
+                <td>{{ log.nombre }}</td>
+                <td>{{ log.apellido }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DE TURNOS POR ESPECIALIDAD -->
+<div
+  class="modal fade modal-xl"
+  id="modalTurnosPorEspecialidad"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <button
+          type="button"
+          class="btn btn-danger"
+          style="margin-right: 1rem; margin-bottom: 1rem"
+          (click)="descargarPDFLogs()"
+        >
+          Descargar PDF
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          style="margin-bottom: 1rem"
+          (click)="descargarExcelLogs()"
+        >
+          Descargar EXCEL
+        </button>
+        <div id="pdflogs">
+          <div
+            style="display: flex; align-content: center; margin-bottom: 2rem"
+          >
+            <img
+              src="../../../assets/logo.png"
+              style="width: 100px"
+              alt="logo"
+            />
+            <h2
+              style="
+                text-align: center;
+                font-size: 1.5rem;
+                font-weight: bolder;
+                padding-top: 2rem;
+                margin-left: 2rem;
+              "
+              id="exampleModalLabel"
+            >
+              CLÍNICA ONLINE
+            </h2>
+          </div>
+          <h1 style="text-align: center; font-size: 1.5rem">
+            TURNOS POR ESPECIALIDAD
+          </h1>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">FECHA</th>
+                <!-- <th scope="col">ID</th> -->
+                <th scope="col">PERFIL</th>
+                <th scope="col">NOMBRE</th>
+                <th scope="col">APELLIDO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="tr-tabla" *ngFor="let log of listaLogs">
+                <td>
+                  {{ log.fecha | dayWithHour }}
+                </td>
+                <!-- <td>{{ log.id }}</td> -->
+                <td>{{ log.perfil }}</td>
+                <td>{{ log.nombre }}</td>
+                <td>{{ log.apellido }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
