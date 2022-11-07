@@ -40,7 +40,7 @@
           </a>
         </li>
         <li class="nav-item" *ngIf="this.authService.isAdmin">
-          <a class="nav-link active" aria-current="page" routerLink="/turnos">
+          <a class="nav-link active" aria-current="page" routerLink="/admin/turnos">
             <button class="btn-nav">Turnos</button>
           </a>
         </li>
@@ -67,7 +67,7 @@
           <a
             class="nav-link active"
             aria-current="page"
-            routerLink="/usuarios-admin"
+            routerLink="/admin/usuarios"
             *ngIf="this.authService.isAdmin"
           >
             <button class="btn-nav">USUARIOS</button>
@@ -77,7 +77,7 @@
           <a
             class="nav-link active"
             aria-current="page"
-            routerLink="/informes"
+            routerLink="/admin/informes"
             *ngIf="this.authService.isAdmin"
           >
             <button class="btn-nav">INFORMES</button>

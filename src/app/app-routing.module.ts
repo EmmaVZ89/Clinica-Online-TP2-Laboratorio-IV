@@ -11,16 +11,44 @@ import { SolicitarTurnoComponent } from './pages/solicitar-turno/solicitar-turno
 import { TurnosComponent } from './pages/turnos/turnos.component';
 import { UsuariosAdminComponent } from './pages/usuarios-admin/usuarios-admin.component';
 
+// const routes: Routes = [
+//   { path: 'registro', component: RegisterComponent, data: { animation: 'Registro' } },
+//   { path: 'login', component: LoginComponent, data: { animation: 'Login' } },
+//   { path: 'usuarios-admin', component: UsuariosAdminComponent },
+//   { path: 'mi-perfil', component: MiPerfilComponent },
+//   { path: 'solicitar-turno', component: SolicitarTurnoComponent },
+//   { path: 'turnos', component: TurnosComponent },
+//   { path: 'mis-turnos', component: MisTurnosComponent },
+//   { path: 'pacientes', component: PacientesComponent },
+//   { path: 'informes', component: InformesComponent },
+//   { path: '', component: BienvenidaComponent, data: { animation: 'Home' } },
+// ];
 const routes: Routes = [
-  { path: 'registro', component: RegisterComponent, data: { animation: 'Registro' } },
+  {
+    path: 'admin',
+    component: UsuariosAdminComponent,
+    children: [{ path: 'usuarios', component: UsuariosAdminComponent }],
+  },
+  {
+    path: 'admin',
+    component: TurnosComponent,
+    children: [{ path: 'turnos', component: TurnosComponent }],
+  },
+  {
+    path: 'admin',
+    component: InformesComponent,
+    children: [{ path: 'informes', component: InformesComponent }],
+  },
+  {
+    path: 'registro',
+    component: RegisterComponent,
+    data: { animation: 'Registro' },
+  },
   { path: 'login', component: LoginComponent, data: { animation: 'Login' } },
-  { path: 'usuarios-admin', component: UsuariosAdminComponent },
   { path: 'mi-perfil', component: MiPerfilComponent },
   { path: 'solicitar-turno', component: SolicitarTurnoComponent },
-  { path: 'turnos', component: TurnosComponent },
   { path: 'mis-turnos', component: MisTurnosComponent },
   { path: 'pacientes', component: PacientesComponent },
-  { path: 'informes', component: InformesComponent },
   { path: '', component: BienvenidaComponent, data: { animation: 'Home' } },
 ];
 

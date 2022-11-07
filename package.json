@@ -25,6 +25,8 @@
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
     "bootstrap": "^5.2.0",
+    "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.1.0",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
     "ngx-toastr": "^15.2.1",

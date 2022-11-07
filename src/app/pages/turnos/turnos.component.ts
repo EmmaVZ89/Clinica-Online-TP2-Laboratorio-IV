@@ -14,10 +14,6 @@ export class TurnosComponent implements OnInit {
 
   botonesEspecialidad: boolean = false;
   filtroEspecialidad: boolean = false;
-  btnClinico: boolean = false;
-  btnOdontologo: boolean = false;
-  btnOftalmologo: boolean = false;
-  listaPorEspecialidad: any[] = [];
 
   vistaListadoDeEspecialistas: boolean = false;
   listaDeEspecialistas: any[] = [];
@@ -26,6 +22,9 @@ export class TurnosComponent implements OnInit {
   cancelacionTurno: boolean = false;
   comentarioCancelacion: string = '';
   turnoACancelar: any = {};
+
+  palabraBusqueda: string = '';
+  turnosFiltrados: any[] = [];
 
   constructor(
     private authService: AuthService,
@@ -45,6 +44,7 @@ export class TurnosComponent implements OnInit {
           }
         }
       }
+      this.turnosFiltrados = [...this.turnList];
       // console.log(this.turnList);
     });
     this.authService.getUsers().subscribe((users) => {
@@ -56,76 +56,6 @@ export class TurnosComponent implements OnInit {
         console.log(this.listaDeEspecialistas);
       }
     });
-  }
-
-  verBotonesEspecialidades() {
-    this.botonesEspecialidad = !this.botonesEspecialidad;
-    this.btnClinico = false;
-    this.btnOdontologo = false;
-    this.btnOftalmologo = false;
-    this.vistaListadoDeEspecialistas = false;
-    this.filtroEspecialidad = false;
-  }
-
-  filtrarPorEspecialidad(especialidad: string) {
-    this.spinner = true;
-    setTimeout(() => {
-      this.activarBoton(especialidad);
-      this.spinner = false;
-      this.listaPorEspecialidad = [];
-      this.filtroEspecialidad = true;
-      for (let i = 0; i < this.turnList.length; i++) {
-        const turno = this.turnList[i];
-        if (turno.especialidad == especialidad) {
-          this.listaPorEspecialidad.push(turno);
-        }
-      }
-    }, 500);
-  }
-
-  activarBoton(especialidad: string) {
-    switch (especialidad) {
-      case 'clinico':
-        this.btnClinico = true;
-        this.btnOdontologo = false;
-        this.btnOftalmologo = false;
-        break;
-      case 'odontologo':
-        this.btnClinico = false;
-        this.btnOdontologo = true;
-        this.btnOftalmologo = false;
-        break;
-      case 'oftalmologo':
-        this.btnClinico = false;
-        this.btnOdontologo = false;
-        this.btnOftalmologo = true;
-        break;
-    }
-  }
-
-  verListaDeEspecialistas() {
-    this.vistaListadoDeEspecialistas = !this.vistaListadoDeEspecialistas;
-    this.listaPorEspecialista = [...this.turnList];
-    this.botonesEspecialidad = false;
-    this.btnClinico = false;
-    this.btnOdontologo = false;
-    this.btnOftalmologo = false;
-    this.filtroEspecialidad = false;
-  }
-
-  elegirEspecialista(especialista: any) {
-    this.spinner = true;
-    setTimeout(() => {
-      this.spinner = false;
-      this.listaPorEspecialista = [];
-      this.filtroEspecialidad = true;
-      for (let i = 0; i < this.turnList.length; i++) {
-        const turno = this.turnList[i];
-        if (turno.especialista.id == especialista.id) {
-          this.listaPorEspecialista.push(turno);
-        }
-      }
-    }, 500);
   }
 
   cancelarTurno(turno: any) {
@@ -164,5 +94,68 @@ export class TurnosComponent implements OnInit {
         this.notificationService.showSuccess('Turno Cancelado', 'Turnos');
       }, 1000);
     }
+  }
+
+  filtrarPorCamposAdministrador() {
+    this.turnosFiltrados = [];
+    if (this.palabraBusqueda == '') {
+      this.turnosFiltrados = [...this.turnList];
+    } else {
+      const busqueda = this.palabraBusqueda.trim().toLocaleLowerCase();
+      for (let i = 0; i < this.turnList.length; i++) {
+        const turno = this.turnList[i];
+        const fechaBusqueda = this.transformarFechaParaBusqueda(turno.fecha);
+        if (
+          turno.especialista.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialista.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.especialidad.toLocaleLowerCase().includes(busqueda) ||
+          turno.estado.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.nombre.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.apellido.toLocaleLowerCase().includes(busqueda) ||
+          turno.paciente.obraSocial.toLocaleLowerCase().includes(busqueda) ||
+          fechaBusqueda.includes(busqueda) ||
+          turno?.detalle?.altura?.toString().includes(busqueda) ||
+          turno?.detalle?.peso?.toString().includes(busqueda) ||
+          turno?.detalle?.temperatura?.toString().includes(busqueda) ||
+          turno?.detalle?.presion?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave1?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave2?.includes(busqueda) ||
+          turno?.detalleAdicional?.clave3?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor1?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor2?.includes(busqueda) ||
+          turno?.detalleAdicional?.valor3?.includes(busqueda)
+        ) {
+          this.turnosFiltrados.push(turno);
+        }
+      }
+    }
+  }
+
+  transformarFechaParaBusqueda(value: any) {
+    if (value.seconds) {
+      value = new Date(value.seconds * 1000);
+    }
+    let rtn =
+      value.getFullYear() +
+      '-' +
+      (value.getMonth() + 1) +
+      '-' +
+      value.getDate();
+    if (parseInt(rtn.split('-')[2]) < 10 && parseInt(rtn.split('-')[2]) > 0) {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-0' +
+        value.getDate();
+    } else {
+      rtn =
+        value.getFullYear() +
+        '-' +
+        (value.getMonth() + 1) +
+        '-' +
+        value.getDate();
+    }
+    return rtn;
   }
 }

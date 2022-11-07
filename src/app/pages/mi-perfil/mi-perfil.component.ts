@@ -104,7 +104,7 @@ export class MiPerfilComponent implements OnInit {
     if (this.especialidad1) {
       if (
         !this.specialistDays.some((d) => d == day) &&
-        !this.user.especialidad[1].diasTurnos.some((d: any) => d == day)
+        !this?.user?.especialidad[1]?.diasTurnos?.some((d: any) => d == day)
       ) {
         this.specialistDays.push(day);
         this.notificationService.showInfo('Día asignado', 'Mi Perfil');

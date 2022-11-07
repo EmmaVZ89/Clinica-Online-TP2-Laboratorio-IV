@@ -159,6 +159,26 @@
         </button>
       </div>
     </div>
+
+    <!-- PERFIL ADMINISTRADOR  -->
+    <div class="row" *ngIf="authService.isAdmin">
+      <div class="col">
+        <label>Nombre</label>
+        <p>{{ user.nombre }}</p>
+        <label>Apellido</label>
+        <p>{{ user.apellido }}</p>
+        <label>Edad</label>
+        <p>{{ user.edad }} años</p>
+      </div>
+      <div class="col">
+        <label>DNI</label>
+        <p>{{ user.dni }}</p>
+        <label>Email</label>
+        <p>{{ user.email }}</p>
+        <label>Tipo de Usuario</label>
+        <p>{{ user.perfil }}</p>
+      </div>
+    </div>
   </div>
   <div class="perfil-container"></div>
 </div>

@@ -35,6 +35,9 @@ import { MisTurnosComponent } from './pages/mis-turnos/mis-turnos.component';
 import { PacientesComponent } from './pages/pacientes/pacientes.component';
 import { InformesComponent } from './pages/informes/informes.component';
 import { DayWithHourPipe } from './pipes/day-with-hour.pipe';
+import { BotonDirective } from './directives/boton.directive';
+import { TarjetaDirective } from './directives/tarjeta.directive';
+import { HoverDirective } from './directives/hover.directive';
 
 @NgModule({
   declarations: [
@@ -55,7 +58,10 @@ import { DayWithHourPipe } from './pipes/day-with-hour.pipe';
     MisTurnosComponent,
     PacientesComponent,
     InformesComponent,
-    DayWithHourPipe
+    DayWithHourPipe,
+    BotonDirective,
+    TarjetaDirective,
+    HoverDirective
   ],
   imports: [
     BrowserModule,

@@ -92,3 +92,27 @@
 .btn-confirmar:hover {
   background: #0099ff;
 }
+
+.estado {
+  font-weight: bolder;
+  text-transform: uppercase;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgb(255, 255, 255);
+  background: #0071b3;
+}
+
+.input-busqueda {
+  width: 15rem;
+  border: 3px solid rgb(0, 119, 255);
+  border-radius: 10px;
+  height: 2rem;
+  padding-left: 1rem;
+  box-shadow: 2px 2px 4px #000;
+}
+
+.input-busqueda:focus {
+  border: 3px solid rgb(0, 119, 255);
+  box-shadow: 0 0 12px #0099ff;
+  transition: box-shadow 0.5s;
+}

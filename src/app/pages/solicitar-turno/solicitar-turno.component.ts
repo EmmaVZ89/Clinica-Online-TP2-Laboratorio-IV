@@ -86,10 +86,34 @@ export class SolicitarTurnoComponent implements OnInit {
     this.turnsSelectionMenu = true;
     this.speciality = especialidad;
     this.loadFreeHours('');
-    this.diasAMostrar.push(this.turnosAMostrar[0].fecha);
-    this.diasAMostrar.push(
-      this.turnosAMostrar[this.turnosAMostrar.length - 1].fecha
-    );
+    this.turnosAMostrar.forEach((t) => {
+      this.diasAMostrar.push(t.fecha);
+    });
+
+    const aux: any[] = [];
+    this.diasAMostrar.forEach((d) => {
+      for (let i = 0; i < this.diasAMostrar.length; i++) {
+        const fecha = this.diasAMostrar[i];
+        if (
+          d.getMonth() == fecha.getMonth() &&
+          d.getDate() == fecha.getDate()
+        ) {
+          if (
+            !aux.some((a) => {
+              return d.getMonth() == a.getMonth() && d.getDate() == a.getDate();
+            })
+          ) {
+            aux.push(d);
+          }
+        }
+      }
+    });
+    aux.sort((a, b) => a - b);
+    this.diasAMostrar = [...aux];
+    // this.diasAMostrar.push(this.turnosAMostrar[0].fecha);
+    // this.diasAMostrar.push(
+    //   this.turnosAMostrar[this.turnosAMostrar.length - 1].fecha
+    // );
   }
 
   loadFreeHours(day: string) {
