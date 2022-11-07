@@ -112,3 +112,16 @@ administración de la misma.
   <p align="center">
    <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/gif/mis-turnos-especialista.gif">
  </p>
+ <h3 align="center">HISTORIAL CLÍNICO</h3>
+ <h4 align="center">En las secciones de MI PERFIL del PACIENTE es posible ver el historial clínico, se puede descargar como PDF, tambien en la sección USUARIOS ingresando como ADMINISTRADOR. En esta sección se agregaron las funcionalidad para descargar un EXCEL con todos los usuarios y tambien la descarga de un EXCEL con los turnos que tiene cada PACIENTE</h4>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/mi-perfil-paciente-pdf.png">
+ </p>
+ <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/historial-usuarios.png">
+ </p>
+ <h3 align="center">ESTADÍSTICAS</h3>
+ <h4 align="center">En esta sección es posible ver las diferentes estadísticas y descargarlas en PDF o EXCEL.</h4>
+  <p align="center">
+   <img src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/img/informes.png">
+ </p>
