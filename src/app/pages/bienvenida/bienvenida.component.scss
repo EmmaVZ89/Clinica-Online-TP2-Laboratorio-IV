@@ -287,3 +287,44 @@
 // *************************************************************************************
 // *************************************************************************************
 // *************************************************************************************
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .home-container {
+    min-height: 100vh;
+  }
+
+  .bienvenida {
+    width: 95%;
+    top: 6rem;
+    left: 0.5rem;
+    padding: 2rem;
+    h1 {
+      line-height: 3rem;
+      text-align: center;
+    }
+    h2 {
+      line-height: 2.5rem;
+      text-align: center;
+    }
+    p {
+      line-height: 1.8rem;
+      text-align: center;
+    }
+  }
+
+  .btn-ingresar {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }
+
+  .btn-registrarse {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+  }  
+}

@@ -70,7 +70,6 @@
   transition: background 0.5s;
 }
 
-
 // ***********************************************************************************
 // ***********************************************************************************
 // ***********************************************************************************
@@ -115,5 +114,49 @@
     -webkit-filter: blur(0px);
     filter: blur(0px);
     opacity: 1;
+  }
+}
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .registro-container {
+    min-height: 100vh;
+    background-repeat: repeat;
+  }
+
+  .opcion-registros {
+    position: absolute;
+    z-index: 100;
+    top: 58%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .card-form {
+    div {
+      width: 95vw;
+      height: 40vh;
+      margin-bottom: 1rem;
+      h2 {
+        font-size: 2rem;
+        text-align: center;
+        font-weight: bolder;
+        text-shadow: 1px 1px #fff;
+      }
+      img {
+        width: 14rem;
+      }
+    }
+  }
+
+  .registro-paciente,
+  .registro-especialista {
+    position: absolute;
+    z-index: 100;
+    width: 95%;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 }
