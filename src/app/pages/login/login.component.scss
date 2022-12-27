@@ -260,3 +260,38 @@ form {
     transform: translateX(-8px);
   }
 }
+
+// RESPONSIVE DESIGN
+
+@media screen and (max-width: 480px) {
+  .login-container {
+    min-height: 100vh;
+  }
+
+  .contenedor-form {
+    padding-top: 4rem;
+    width: 95%;
+    height: 60vh;
+  }
+
+  form {
+    left: 2.5%;
+    top: 25%;
+  }
+
+  .example-button-row {
+    left: 5%;
+    top: 10%;
+  }
+
+  .example-button-row button {
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+
+  .img-btn {
+    left: 3%;
+    top: 3%;
+    width: 2.5rem;
+  }
+}
