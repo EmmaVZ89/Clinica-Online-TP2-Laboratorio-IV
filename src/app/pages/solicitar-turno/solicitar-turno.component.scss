@@ -15,7 +15,7 @@
 
 .solicitar-turno {
   position: absolute;
-  width: 90vw;
+  width: 95vw;
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -117,4 +117,69 @@
   background: rgb(250, 52, 52);
   transition: background 0.5s;
   cursor: pointer;
+}
+
+.turnos-desk {
+  display: block;
+}
+
+.turnos-resp {
+  display: none;
+}
+
+.contenedor-btn-hora {
+  overflow-y: scroll;
+  height: 15rem;
+}
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .solicitar-turno-container {
+    min-height: 100vh;
+  }
+
+  .contenedor-especialistas {
+    padding-top: 24rem;
+  }
+
+  .contenerdor-carta-esp {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .carta-especialista {
+    margin-bottom: 2rem;
+  }
+
+  .especialidades {
+    margin-top: 1rem;
+  }
+
+  .carta-turno {
+    height: fit-content;
+    width: 100%;
+    img {
+      margin-top: 2rem;
+    }
+  }
+
+  .turnos-desk {
+    display: none;
+  }
+
+  .turnos-resp {
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .btn-dia {
+    width: 8rem;
+  }
+
+  .contenedor-btn-hora {
+    height: 8rem;
+  }
+  
 }

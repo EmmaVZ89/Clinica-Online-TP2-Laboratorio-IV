@@ -26,9 +26,15 @@
       </div>
     </div>
 
-    <div *ngIf="specialistSelectionMenu && !patientSelectionMenu">
+    <div
+      class="contenedor-especialistas"
+      *ngIf="specialistSelectionMenu && !patientSelectionMenu"
+    >
       <h3>ESPECIALISTAS</h3>
-      <div style="display: flex; justify-content: center">
+      <div
+        class="contenerdor-carta-esp"
+        style="display: flex; justify-content: center"
+      >
         <div
           *ngFor="let esp of especialistasList"
           (click)="showSpeciality(esp)"
@@ -102,8 +108,7 @@
           </p>
           <p>{{ speciality.nombre }}</p>
         </div>
-        <div class="col">
-          <!-- <h3>Turnos</h3> -->
+        <div class="col turnos-desk">
           <button
             class="btn btn-success"
             style="
@@ -118,6 +123,9 @@
             {{ dia | dayDate }}
           </button>
           <br />
+          <p *ngIf="diasAMostrar.length == 0" style="text-align: center">
+            No hay turnos disponibles
+          </p>
           <div style="overflow-y: scroll; height: 15rem">
             <button
               class="btn btn-info"
@@ -136,7 +144,52 @@
           <button
             *ngIf="botonPedirTurno"
             class="btn btn-primary"
-            style="margin-top: 1rem; width: 100%;"
+            style="margin-top: 1rem; width: 100%"
+            (click)="solicitarTurno()"
+          >
+            Solicitar Turno
+          </button>
+        </div>
+      </div>
+
+      <div class="row turnos-resp">
+        <div class="col">
+          <button
+            class="btn btn-success btn-dia"
+            style="
+              text-transform: uppercase;
+              margin-left: 0.5rem;
+              margin-right: 0.5rem;
+              margin-bottom: 0.5rem;
+            "
+            *ngFor="let dia of diasAMostrar"
+            (click)="loadFreeHoursOneDay(dia)"
+          >
+            {{ dia | dayDate }}
+          </button>
+          <br />
+          <p *ngIf="diasAMostrar.length == 0" style="text-align: center">
+            No hay turnos disponibles
+          </p>
+          <div class="contenedor-btn-hora">
+            <button
+              class="btn btn-info"
+              style="
+                width: 4rem;
+                height: 4rem;
+                border-radius: 1rem;
+                margin: 0.1rem;
+              "
+              *ngFor="let turno of turnosDeUnDiaAMostrar"
+              (click)="seleccionarTurno(turno)"
+            >
+              {{ turno.fecha | date }}
+            </button>
+          </div>
+          <button
+            *ngIf="botonPedirTurno"
+            class="btn btn-primary"
+            style="margin-top: 1rem; width: 100%"
             (click)="solicitarTurno()"
           >
             Solicitar Turno
