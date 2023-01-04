@@ -19,18 +19,16 @@
             type="button"
             color="light"
             mat-fab
-            style="width: 8rem; height: 8rem"
             class="btn-fav"
             title="Descargar detalles de turnos"
             (click)="verTurnosUsuario(user)"
           >
             <img
               class="img-btn"
-              width="50"
               src="{{ user.imagen1 }}"
               alt="imagen"
             />
-            <p>{{ user.nombre }}</p>
+            <p class="user-name">{{ user.nombre }}</p>
           </button>
         </td>
         <td style="text-transform: upperCase">

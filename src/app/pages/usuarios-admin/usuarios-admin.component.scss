@@ -45,6 +45,10 @@
   color: #fff;
   transition: background 0.5s, color 0.5s;
 }
+
+.user-name {
+  display: block;
+}
 // .tr-tabla:hover {
 //   color: #fff;
 //   background: rgba(201, 0, 0, 0.685);
@@ -297,4 +301,74 @@
   right: 6.5%;
   height: 3rem;
   background: #16bb00;
+}
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .usuarios-container {
+    min-height: 100vh;
+  }
+  .btn-nuevo-usuario {
+    width: 10rem;
+    top: 12%;
+    left: 2%;
+    height: 4rem;
+    padding: 0.5rem;
+  }
+  .btn-excel {
+    width: 10rem;
+    top: 12%;
+    right: 2%;
+    height: 4rem;
+    padding: 0.5rem;
+  }
+  .tabla-usuario {
+    width: 95vw;
+    height: 80vh;
+    overflow-x: scroll;
+    left: 2%;
+    top: 22%;
+  }
+  .tr-tabla {
+    font-size: 1rem;
+    td {
+      line-height: normal;
+    }
+  }
+  .btn-fav {
+    width: 3rem;
+    height: 3rem;
+  }
+  .img-btn {
+    width: 40px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+  }
+  .user-name {
+    display: none;
+  }
+  .btn-menu-volver {
+    top: 14%;
+  }
+  .opcion-registros {
+    left: 1%;
+    top: 22%;
+  }
+  .col {
+    div {
+      margin-bottom: 1rem;
+      img {
+        width: 10rem;
+      }
+    }
+  }
+  .registro-paciente,
+  .registro-especialista {
+    position: absolute;
+    z-index: 100;
+    top: 24%;
+    left: 1%;
+  }
 }

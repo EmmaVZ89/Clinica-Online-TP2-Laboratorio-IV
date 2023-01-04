@@ -116,3 +116,26 @@
   box-shadow: 0 0 12px #0099ff;
   transition: box-shadow 0.5s;
 }
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .turnos-container {
+    min-height: 100vh;
+  }
+  .turnos {
+    overflow-y: scroll;
+    overflow-x: scroll;
+    width: 95vw;
+    height: 85vh;
+    top: 14%;
+    left: 2%;
+  }
+  .input-busqueda {
+    width: 10rem;
+    margin-bottom: 0.5rem;
+  }
+  .tabla-usuario {
+    width: 100%;
+  }
+}

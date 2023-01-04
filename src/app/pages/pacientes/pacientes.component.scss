@@ -110,3 +110,21 @@
   position: absolute;
   bottom: 0;
 }
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .pacientes-container {
+    min-height: 100vh;
+  }
+  .carta-especialista {
+    height: auto;
+    margin-bottom: 1rem;
+  }
+  .perfil {
+    width: 95vw;
+    height: auto;
+    top: 14%;
+    left: 2%;
+  }
+}
