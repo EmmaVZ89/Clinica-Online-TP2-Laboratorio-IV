@@ -1,3 +1,13 @@
+<hr>
+<p align="center">
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/angular.png"/>
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/ts.png"/>
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/firebase.png"/>
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/html.png"/>
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/sass.png"/>
+<img width=100 src="https://github.com/EmmaVZ89/Clinica-Online-TP2-Laboratorio-IV/blob/main/src/assets/readme/chartjs.png"/>
+</p>
+<hr>
 <h2>Alumno: Emmanuel Zelarayán 4°A</h2>
 <h1 align="center">CLINICA ONLINE</h1>
 <p align="center">
