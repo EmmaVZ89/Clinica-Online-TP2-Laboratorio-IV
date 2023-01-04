@@ -70,3 +70,24 @@
     text-align: center;
   }
 }
+
+// RESPONSIVE
+
+@media screen and (max-width: 480px) {
+  .informes-container {
+    min-height: 100vh;
+  }
+  .contenedor-estadisticas {
+    position: absolute;
+    width: 95vw;
+    height: auto;
+    top: 12%;
+    left: 2.5%;
+  }
+  .carta-especialista {
+    width: 98%;
+    height: auto;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+  }
+}
